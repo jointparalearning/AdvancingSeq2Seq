@@ -64,41 +64,6 @@ for en_word in en_w2i :
         
 pickle.dump(en_word2vec, open('/data/scratch-oc40/symin95/github_lf/logicalforms/data/en_word2vec_0.1m.p', 'wb'))
 
-
-##EMRQA
-count = 0
-no_overlap = []
-for en_word, i in combinedVocab2idx.items() :
-    if not(en_word) in model:
-        if en_word == 'UNK':
-            emrqa_word2vec[i] = model['unk'] 
-        else:
-            emrqa_word2vec[i] = [np.random.normal(scale=0.25) for i in range(300)]
-            if en_word in vocab2idx_dictRAW['question']:
-                count += 1
-                no_overlap.append(en_word)
-    else:
-        emrqa_word2vec[i] = model[en_word] 
-pickle.dump(emrqa_word2vec, open('/data/scratch-oc40/symin95/github_lf/logicalforms/Refactored_Tiffany/data/emrqa_word2vec.p', 'wb'))
-
-model = gensim.models.KeyedVectors.load_word2vec_format('../CzEng/word2vec', binary=True) 
-count = 0
-no_overlap = []
-for en_word, i in combinedVocab2idx.items() :
-    if not(en_word) in model:
-        if en_word == 'UNK':
-            emrqa_word2vec[i] = model['unk'] 
-        else:
-            emrqa_word2vec[i] = [np.random.normal(scale=0.25) for i in range(300)]
-            if en_word in vocab2idx_dictRAW['question']:
-                count += 1
-                no_overlap.append(en_word)
-    else:
-        emrqa_word2vec[i] = model[en_word] 
-
-pickle.dump(emrqa_word2vec, open('/data/scratch-oc40/symin95/github_lf/logicalforms/Refactored_Tiffany/data/emrqa_nonmedical_word2vec.p', 'wb'))
-
-
 #Do the same for 0.2m
 en_vocab_file = '/data/scratch-oc40/symin95/github_lf/logicalforms/data/en_voc_subtitles_0.25m.p'
 cz_vocab_file = '/data/scratch-oc40/symin95/github_lf/logicalforms/data/cz_voc_subtitles_0.25m.p'
@@ -131,25 +96,3 @@ for en_word, i in en_w2i.items() :
         en_word2vec[i] = model[en_word] 
 
 pickle.dump(en_word2vec, open('/data/scratch-oc40/symin95/github_lf/logicalforms/data/en_word2vec_0.5m.p', 'wb'))
-
-
-#######
-##Overnight 
-domain = 'basketball'
-basketball_vocab = '/data/scratch-oc40/symin95/github_lf/logicalforms/LF-murtaza/bowser_recipes_para/data/para_preprocessed/'+domain+ '/vocab.p'
-en_vocab = cPickle.load(open(basketball_vocab,'rb'))
-en_w2i = en_vocab['word2idx']
-en_word2vec = np.zeros((len(en_w2i), 300))
-for en_word, i in en_w2i.items() :
-    if not(en_word) in model:
-        if en_word == 'UNK':
-            en_word2vec[i] = model['unk'] 
-        else:
-            x = [np.random.normal(scale=0.25) for i in range(300)]
-            en_word2vec[i] = x / np.std(x)
-    else:
-        en_word2vec[i] = model[en_word] / np.std(model[en_word] )
-
-pickle.dump(en_word2vec, open('/data/scratch-oc40/symin95/github_lf/logicalforms/LF-murtaza/bowser_recipes_para/data/para_preprocessed/'+domain+ '/word2vec.p', 'wb'))
-
-##########

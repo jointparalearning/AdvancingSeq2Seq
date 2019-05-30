@@ -141,87 +141,27 @@ def train(args):
     datasets = OrderedDict()
     fast_text_en, fast_text_cz = None, None
     print("Reading data")
-    if args.small_train == 1:
-        datasets['train'] = CzENG(
-                data_file='/data/scratch-oc40/symin95/github_lf/logicalforms/data/small_train.p',
-                split='train')
-        if args.test_yourself == 1:
-            datasets['test'] = CzENG(
-                    data_file='/data/scratch-oc40/symin95/github_lf/logicalforms/data/small_train.p',
-                    split='test')
-        else:
-            datasets['test'] = CzENG(
-                    data_file='/data/scratch-oc40/symin95/github_lf/logicalforms/data/small_test.p',
-                    split='test')
-        en_vocab_file = '/data/scratch-oc40/symin95/github_lf/logicalforms/data/en_voc_subtitles_0.1m.p'
-        cz_vocab_file = '/data/scratch-oc40/symin95/github_lf/logicalforms/data/cz_voc_subtitles_0.1m.p'
-        
-        if args.fast_text == 1:
-            fast_text_en = cPickle.load(open('/data/scratch-oc40/symin95/github_lf/logicalforms/data/en_fasttext_0.1m.p', 'rb'))
-            fast_text_cz = cPickle.load(open('/data/scratch-oc40/symin95/github_lf/logicalforms/data/cz_fasttext_0.1m.p', 'rb'))
-        elif args.word2vec == 1:
-            fast_text_en = cPickle.load(open('/data/scratch-oc40/symin95/github_lf/logicalforms/data/en_word2vec_0.1m.p', 'rb'))
-
-    else:
-        if args.train_size == 1:
-            train_file = '/data/scratch-oc40/symin95/github_lf/logicalforms/data/populated_selected_training_0.1M.p'
-            test_file = '/data/scratch-oc40/symin95/github_lf/logicalforms/data/para_test_dict_0.1M.p'
-            en_vocab_file = '/data/scratch-oc40/symin95/github_lf/logicalforms/data/en_voc_subtitles_0.1m.p'
-            cz_vocab_file = '/data/scratch-oc40/symin95/github_lf/logicalforms/data/cz_voc_subtitles_0.1m.p'
-            if args.fast_text == 1:
-                fast_text_en = cPickle.load(open('/data/scratch-oc40/symin95/github_lf/logicalforms/data/en_fasttext_0.1m.p', 'rb'))
-                fast_text_cz = cPickle.load(open('/data/scratch-oc40/symin95/github_lf/logicalforms/data/cz_fasttext_0.1m.p', 'rb'))
-            elif args.word2vec == 1:
-                fast_text_en = cPickle.load(open('/data/scratch-oc40/symin95/github_lf/logicalforms/data/en_word2vec_0.1m.p', 'rb'))
-
-
-        elif args.train_size == 2:
-            train_file = '/data/scratch-oc40/symin95/github_lf/logicalforms/data/populated_selected_training_0.25M.p'
-            test_file = '/data/scratch-oc40/symin95/github_lf/logicalforms/data/para_test_dict_0.25M.p'
-            en_vocab_file = '/data/scratch-oc40/symin95/github_lf/logicalforms/data/en_voc_subtitles_0.25m.p'
-            cz_vocab_file = '/data/scratch-oc40/symin95/github_lf/logicalforms/data/cz_voc_subtitles_0.25m.p'
-            if args.word2vec == 1:
-                fast_text_en = cPickle.load(open('/data/scratch-oc40/symin95/github_lf/logicalforms/data/en_word2vec_0.2m.p', 'rb'))
-
-
-        else:
-            train_file = '/data/scratch-oc40/symin95/github_lf/logicalforms/data/populated_selected_training_halfM.p'
-            test_file = '/data/scratch-oc40/symin95/github_lf/logicalforms/data/para_test_dict_halfM.p'
-            en_vocab_file = '/data/scratch-oc40/symin95/github_lf/logicalforms/data/en_voc_subtitles_5m.p'
-            cz_vocab_file = '/data/scratch-oc40/symin95/github_lf/logicalforms/data/cz_voc_subtitles_5m.p'
-            if args.word2vec == 1:
-                fast_text_en = cPickle.load(open('/data/scratch-oc40/symin95/github_lf/logicalforms/data/en_word2vec_0.5m.p', 'rb'))
-
-        
-        datasets['train'] = CzENG(
-                #data_file='/data/scratch-oc40/symin95/github_lf/logicalforms/data/in_range_sampled_czeng_final_yes_para_input.p',
-                data_file = train_file,
-                split='train')
     
-        #load test 
-        datasets['test'] = CzENG(
-            #data_file='/data/scratch-oc40/symin95/github_lf/logicalforms/data/test_czeng.p',
-            data_file=test_file,
-            split='test')
+    train_file = 'data/populated_selected_training_0.1M.p'
+    test_file = 'data/para_test_dict_0.1M.p'
+    en_vocab_file = 'data/en_voc_subtitles_0.1m.p'
+    cz_vocab_file = 'data/cz_voc_subtitles_0.1m.p'
+
+    if args.word2vec == 1:
+        fast_text_en = cPickle.load(open('data/en_word2vec_0.1m.p', 'rb'))
+
+
     
-    
-# =============================================================================
-#     datasets['train'] = CzENG(
-#             #data_file='/data/scratch-oc40/symin95/github_lf/logicalforms/data/in_range_sampled_czeng_final_yes_para_input.p',
-#             data_file = '/data/scratch-oc40/symin95/github_lf/logicalforms/data/training_with_50th.p',
-#             split='train')
-#     datasets['test'] = CzENG(
-#                 #data_file='/data/scratch-oc40/symin95/github_lf/logicalforms/data/test_czeng.p',
-#                 data_file='/data/scratch-oc40/symin95/github_lf/logicalforms/data/test_with_5th.p',
-#                 split='test')
-#     en_vocab_file = '/data/scratch-oc40/symin95/github_lf/logicalforms/data/en_reduced_voc_50th.p'
-#     cz_vocab_file = '/data/scratch-oc40/symin95/github_lf/logicalforms/data/cz_reduced_voc_5th.p'
-#     en_vocab = cPickle.load(open(en_vocab_file,'rb')); cz_vocab = cPickle.load(open(cz_vocab_file,'rb'))
-#     en_w2i, en_i2w = en_vocab["en_w2i"], en_vocab["en_i2w"]
-#     cz_w2i, cz_i2w = cz_vocab["cz_w2i"], cz_vocab["cz_i2w"]
-# 
-# =============================================================================
-    
+    datasets['train'] = CzENG(
+            data_file = train_file,
+            split='train')
+
+    #load test 
+    datasets['test'] = CzENG(
+        data_file=test_file,
+        split='test')
+
+     
         #load vocab
     en_vocab = cPickle.load(open(en_vocab_file,'rb')); cz_vocab = cPickle.load(open(cz_vocab_file,'rb'))
     en_w2i, en_i2w = en_vocab["en_w2i"], en_vocab["en_rm_i2w"]
@@ -241,8 +181,8 @@ def train(args):
     hidden_size = args.hid_size
     num_epochs = args.num_epochs
     batch_size = args.batch_size
-    save_directory = '/data/scratch-oc40/symin95/github_lf/logicalforms/CzEng/outputs/' + args.save_dir
-    load_dir = '/data/scratch-oc40/symin95/github_lf/logicalforms/CzEng/outputs/' + args.load_dir
+    save_directory = 'outputs/' + args.save_dir
+    load_dir = 'outputs/' + args.load_dir
     if not os.path.exists(save_directory):
         os.makedirs(save_directory)
     
