@@ -10,6 +10,8 @@ run/
 analysis/
 results/
 ELMO_no_rep/
+ibm_git_files/
+official_git_files/
 #bowser_recipes_MyMess/
 #bowser_recipes_para/
 tsne_plots/
