@@ -1,6 +1,21 @@
 # AdvancingSeq2Seq
 Repository for EMNLP 2019 Submission "Advancing Seq2Seq Models with Joint Paraphrase Learning" 
 
+## Model Performances for the Overnight Dataset
+
+Performances of our implementation of the baseline Seq2Seq and our proposed models (ParaGen, ParaDetect, ParaGen+Detect) on all domains of the Overnight Dataset. 
+Also, we compare our results to the baseline/ state-of-the-art results made by <a href="https://www.aclweb.org/anthology/N19-2003">Damonte et al.</a>
+All performances are measured by exact match accuracy, not denotation accuracy.
+
+| Model                                | Basketball | Blocks | Calendar | Publications | Recipes | Restaurants | Housing | SocialNetwork |
+| ------------------------------------ |:----------:|:------:|:--------:|:------------:|
+| Baseline Seq2Seq (Our Implementation)| 82.8 %     | 39.3 % | 59.5 %   | 60.2 %       | 
+| ParaGen                              | 82.09 %    | 40.9 % | 54.8 %   | 59.6 %       | 
+| ParaDetect                           | 83.8 %     | 42.4 % | 54.2 %   | 60.9 %       | 
+| ParaGen + Detect                     |            | 38.6 % | 56.5 %   | 63.4 %       | 
+| Baseline Seq2Seq (Damonte et al.)    | 69.6 %     | 25.1 % | 43.5 %   | 32.9 %       | 
+| Transfer Learning (Damonte et al.)   | 71.1%      | 25.1 % | 48.8 %   | 40.4 %       | 
+
 ## How to Replicate Results
 
 <!---### Prerequisites
