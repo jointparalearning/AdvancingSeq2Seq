@@ -8,13 +8,13 @@ Also, we compare our results to the baseline/ state-of-the-art results made by <
 All performances are measured by exact match accuracy, not denotation accuracy.
 
 | Model                                | Basketball | Blocks | Calendar | Publications | Recipes | Restaurants | Housing | SocialNetwork |
-| ------------------------------------ |:----------:|:------:|:--------:|:------------:|
-| Baseline Seq2Seq (Our Implementation)| 82.8 %     | 39.3 % | 59.5 %   | 60.2 %       | 
-| ParaGen                              | 82.09 %    | 40.9 % | 54.8 %   | 59.6 %       | 
-| ParaDetect                           | 83.8 %     | 42.4 % | 54.2 %   | 60.9 %       | 
-| ParaGen + Detect                     |            | 38.6 % | 56.5 %   | 63.4 %       | 
-| Baseline Seq2Seq (Damonte et al.)    | 69.6 %     | 25.1 % | 43.5 %   | 32.9 %       | 
-| Transfer Learning (Damonte et al.)   | 71.1%      | 25.1 % | 48.8 %   | 40.4 %       | 
+| ------------------------------------ |:----------:|:------:|:--------:|:------------:|:-------:|:-----------:|:-------:|--------------:|
+| Baseline Seq2Seq (Our Implementation)| 82.8 %     | 39.3 % | **59.5 %**   | 60.2 %       | 75.0 %  | 53.3 %      | 47.1 %  | 67.6 %        | 
+| ParaGen                              | 82.09 %    | 40.9 % | 54.8 %   | 59.6 %       | **75.5 %**  | **53.9 %**      | **49.2 %**  | 68.3 %        | 
+| ParaDetect                           | **83.8 %** | **42.4 %** | 54.2 %   | 60.9 %       | 74.5 %  | 51.5 %      | 44.4 %  |         | 
+| ParaGen + Detect                     |            | 38.6 % | 56.5 %   | **63.4 %**       | 70.4 %  | 52.4 %      | 45.5 %  |         | 
+| Baseline Seq2Seq (Damonte et al.)    | 69.6 %     | 25.1 % | 43.5 %   | 32.9 %       | 58.3 %  | 37.3 %      | 29.6 %  | 51.2 %        | 
+| Transfer Learning (Damonte et al.)   | 71.1%      | 25.1 % | 48.8 %   | 40.4 %       | 63.4 %  | 39.2 %      | 38.1 %  | 54.5 %        | 
 
 ## How to Replicate Results
 
