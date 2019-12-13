@@ -1,5 +1,5 @@
 # AdvancingSeq2Seq
-Repository for NIPS LIRE 2019 Submission "Advancing Seq2Seq Models with Joint Paraphrase Learning" 
+Repository for ACL 2020 Submission "Advancing Seq2Seq Models with Joint Paraphrase Learning" 
 
 ## Model Performances for the Overnight Dataset
 
