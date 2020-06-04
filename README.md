@@ -1,5 +1,5 @@
 # AdvancingSeq2Seq
-Repository for ACL 2020 Submission "Advancing Seq2Seq Models with Joint Paraphrase Learning" 
+Repository for EMNLP 2020 Submission "Advancing Seq2Seq Models with Joint Paraphrase Learning" 
 
 ## Model Performances for the Overnight Dataset
 
@@ -20,9 +20,9 @@ All performances are measured by exact match accuracy, not denotation accuracy.
 
 <!---### Prerequisites
 
-Note: Currently, this codebase only works on machines with cuda gpu.
+Note: Currently, this codebase only works on machines with cuda gpu ver 10. 
 
-You need to install requirements for this project before . -->
+You need to install latest version of PyTorch, numpy, NLTK. -->
 
 ### Results for Semantic Parsing on emrQA 
 
@@ -261,77 +261,6 @@ python bowser_train_copy.py -a 0.01 -which_attn_g general -which_attn_c general 
 
 ```
 python bowser_train_copy.py -a 0.075 -which_attn_g general -which_attn_c general -bahd_g 1 -bahd_c 1 -lr 0.003 -d 0 -c 3 -l 0 -k 7 -e 200 -bi 1  -v 0  -pad 0 -jia 1  -train_f $domain$/train_v1.json  -test_f $domain$/test_v1.json -half_start 12 -half_end 44 -seed 100 -save_dir $domain$/baseline_tes_k3  -domain $domain$ -qp 1 -multi_para 1  -cos_alph 0.75 -cos_obj 1 
-```
-
-### Results for Czech -> English Machine Translation on CzENG 1.6 + ParaNMT50M   
-
-1. Download pre-processed data at https://www.dropbox.com/sh/mbc9pkgv5trx8xh/AAAHvIDGjkmkf9nJGh4VtdgJa?dl=0
-
-2. Copy the uncompressed folder 'data' into the folder CzEng.
-
-3. To replicate results (Table 2), run the following commands for each model:
-**3-1-1: Baseline (Simple Seq2seq without Copy)**
-```
-python CzEng_train_seq2seq.py -a 0 -save_dir 0.001_no_word2vec -lr 0.001 -k 1000 -c 2 -v 1 -batch_size 64 -hid_size 256  -cross_ent 0 -pad 0 -prob_already 0  -half_start 1000 -half_end 1000 -half_factor 0.8 -num_epoch 100 -train_size 1 -s_e_e 1 -s_from 1
-```
-```
-python test_file.py -c 2 -load_dir  0.001_no_word2vec -epoch 50 -a 0
-```
-
-**3-1-2: Baseline (Simple Seq2seq without Copy) with Word2Vec**
-```
-python CzEng_train_seq2seq.py -a 0 -save_dir 0.001_word2vec -lr 0.001 -k 1000 -c 0 -v 1 -batch_size 64 -hid_size 256  -cross_ent 0  -pad 0 -prob_already 0  -half_start 1000 -half_end 1000 -half_factor 0.8 -num_epoch 100 -train_size 1 -word_vec 1 -s_e_e 1 -s_from 0
-```
-```
-python test_file.py -c 3 -load_dir 0.001_word2vec -epoch 50 -a 0
-```
-
-**3-2-1: ParaGen**
-```
-python CzEng_train_seq2seq.py -a 0 -save_dir test -lr 0.01 -k 5 -c 2 -v 0 -batch_size 64 -hid_size 256  -cross_ent 0 -clip 0.8 -pad 1 -prob_already 0  -half_start 5 -half_end 55 -half_factor 0.8 -num_epoch 100 -small_train 1 -word_vec 1
-```
-```
-python test_file.py -load_dir  gen_0.01_no_word2vec -epoch 60 -c 1 -a 0.01
-```
-
-**3-2-2: ParaGen with Word2Vec**
-```
-python CzEng_train_seq2seq.py -a 0.01 -save_dir gen_0.01_no_word2vec -lr 0.001  1000 -c 3 -v 0 -batch_size 32 -hid_size 256  -cross_ent 0 -pad 0 -prob_already 0  -half_start 1000 -half_end 1000 -half_factor 0.8 -num_epoch 100 -train_size 1 -s_e_e 1 -s_from 1
-```
-```
-python test_file.py -load_dir  gen_0.01_no_word2vec -epoch 60 -c 1 -a 0.01 
-```
-
-**3-3-1: ParaDetect**
-```
-python bowser_train_copy.py -a 0.01 -which_attn_g general -which_attn_c general -bahd_g 1 -bahd_c 1 -lr 0.003 -d 0 -c 0 -l 0 -k 7 -e 200 -bi 1  -v 0  -pad 0 -jia 1  -train_f $domain$/train_v1.json  -test_f $domain$/test_v1.json -half_start 12 -half_end 44 -seed 100 -save_dir $domain$/baseline_tes_k3  -domain $domain$ -qp 1 -multi_para 1
-```
-```
-python test_file.py -c 2 -load_dir 0.001_cos_0.01_nopad_noword2vec  -epoch 100 -a 0.01  -cos_alph 1 -cos_only 1
-```
-
-**3-3-2: ParaDetect with Word2Vec**
-```
-python CzEng_train_seq2seq.py -a 0.01 -save_dir 0.001_cos_0.01 -lr 0.001 -k 1000 -c 0 -v 1 -batch_size 64 -hid_size 256  -cross_ent 0 -pad 0 -prob_already 0  -half_start 1000 -half_end 1000 -half_factor 0.8 -num_epoch 100 -train_size 1 -word_vec 1 -cos_alph 1 -cos_only 1 
-```
-```
-python test_file.py -c 2 -load_dir 0.001_cos_0.01 -epoch 100 -a 0.01 -cos_alph 1 -cos_only 1
-```
-
-
-**3-4-1: ParaGen + ParaDetect**
-```
-python CzEng_train_seq2seq.py -a 0.0075 -save_dir both_noword2vec_alph_0.0075 -lr 0.001 -k 1000 -c 0 -v 0 -batch_size 32 -hid_size 256  -cross_ent 0 -pad 0 -prob_already 0  -half_start 1000 -half_end 1000 -half_factor 0.8 -num_epoch 100 -train_size 1  -s_e_e 1 -s_from 40 -cos_alph 0.75 -load_dir both_noword2vec_alph_0.0075 
-```
-```
-python  test_file.py -load_dir both_noword2vec_alph_0.0075 -a 0.01   -epoch 65 -c 3
-```
-**3-4-2: ParaGen + ParaDetect with Word2Vec**
-```
-python CzEng_train_seq2seq.py -a 0.0075 -save_dir both_withword2vec_alph_0.0075 -lr 0.001 -k 1000 -c 3 -v 0 -batch_size 32 -hid_size 256  -cross_ent 0 -pad 0 -prob_already 0  -half_start 1000 -half_end 1000 -half_factor 0.8 -num_epoch 100 -train_size 1 -word_vec 1 -s_e_e 1 -s_from 40 -cos_alph 0.75
-```
-```
-python test_file.py -load_dir  both_withword2vec_alph_0.0075 -a 0.01   -epoch 65 -c 0
 ```
 
 
