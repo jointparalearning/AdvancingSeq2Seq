@@ -46,9 +46,6 @@ python train.py -a 0 -sh 0 -spl 2 -m 0  -kl 0 -save_dir copy_real_bi/shuffle0/sp
 ```
 python train.py -a 0 -sh 0 -spl 3 -m 0  -kl 0 -save_dir copy_real_bi/shuffle0/spl3/1e-3_alpha0_lr0.5 -bin 0 -con 1  -c 0 -bi 1 -H decay5e-4.py -s_e_e 1 ; python test.py -sh 0 -spl 3 -load_dir copy_real_bi/shuffle0/spl3/1e-3_alpha0_lr0.5 -e 20  -bin 0 -con 1 -c 2 -bi 1 -m 0 
 ```
-```
-python train.py -a 0 -sh 0 -spl -1 -m 0  -kl 0 -save_dir copy_real_bi/shuffle0/spl-1/1e-3_alpha0_lr0.5 -bin 0 -con 1  -c 0 -bi 1 -H decay5e-4.py -s_e_e 1 ; python test.py -sh 0 -spl -1 -load_dir copy_real_bi/shuffle0/spl-1/1e-3_alpha0_lr0.5 -e 20  -bin 0 -con 1 -c 2 -bi 1 -m 0 
-```
 
 **3-2: ParaGen**
 ```
@@ -62,9 +59,6 @@ python train.py -a 0.01 -sh 0 -spl 2 -m 0  -kl 0 -save_dir copy_real_bi/shuffle0
 ```
 ```
 python train.py -a 0.01 -sh 0 -spl 3 -m 0  -kl 0 -save_dir copy_real_bi/shuffle0/spl3/ac0_qp1/1e-3_alha0.01_lr_1.5 -ac 0 -qp 1 -bin 0 -con 1  -c 3 -bi 1 -H decay1.5e-3.py -s_e_e 1 ; python test.py -sh 0  -spl 3 -load_dir copy_real_bi/shuffle0/spl3/ac0_qp1/1e-3_alha0.01_lr_1.5  -e 18 -bin 0 -con 1 -c 0 -bi 1 -m 0 
-```
-```
-python train.py -a 0.01 -sh 0 -spl -1 -m 0  -kl 0 -save_dir copy_real_bi/shuffle0/spl-1/ac0_qp1/1e-3_alha0.01_lr_1.5 -ac 0 -qp 1 -bin 0 -con 1  -c 3 -bi 1 -H decay1.5e-3.py -s_e_e 1 ; python test.py -sh 0  -spl -1 -load_dir copy_real_bi/shuffle0/spl-1/ac0_qp1/1e-3_alha0.01_lr_1.5 -e 18 -bin 0 -con 1 -c 0 -bi 1 -m 0 
 ```
 
 **3-3: ParaDetect**
@@ -80,9 +74,6 @@ python train.py -a 0.01 -sh 0 -spl 2 -m 0  -kl 0 -save_dir copy_real_bi/shuffle0
 ```
 python train.py -a 0.01 -sh 0 -spl 3 -m 0  -kl 0 -save_dir copy_real_bi/shuffle0/spl3/qp_cos_rev/cos_only_0.98_1.5_clip6 -ac 0 -qp 1 -bin 0 -con 1  -c 0 -bi 1 -H decay_0.98_1.5e-3.py -cos_obj 1 -cos_alph 1 -cos_only 1 -s_e_e 1 -clip 6; python test.py -sh 0  -spl 3 -load_dir copy_real_bi/shuffle0/spl3/qp_cos_rev/cos_only_0.98_1.5_clip6 -e 14 -bin 0 -con 1 -c 1 -bi 1 -m 0 
 ```
-```
-python train.py -a 0.01 -sh 0 -spl -1 -m 0  -kl 0 -save_dir copy_real_bi/shuffle0/spl-1/qp_cos_rev/cos_only_0.98_1.5_clip6 -ac 0 -qp 1 -bin 0 -con 1  -c 3 -bi 1 -H decay_0.98_1.5e-3.py -cos_obj 1 -cos_alph 1 -cos_only 1 -s_e_e 1 -clip 6; python test.py -sh 0  -spl -1 -load_dir copy_real_bi/shuffle0/spl-1/qp_cos_rev/cos_only_0.98_1.5_clip6 -e 14 -bin 0 -con 1 -c 1 -bi 1 -m 0 
-```
 
 **3-4: ParaGen + ParaDetect**
 
@@ -97,9 +88,6 @@ python train.py -a 0.0075 -sh 0 -spl 2 -m 0  -kl 0 -save_dir copy_real_bi/shuffl
 ```
 ```
 python train.py -a 0.0075 -sh 0 -spl 3 -m 0  -kl 0 -save_dir copy_real_bi/shuffle0/spl3/qp_cos_rev/cos_alph0.75_decay0.965_1.75_alpha0.0075 -ac 0 -qp 1 -bin 0 -con 1  -c 3 -bi 1 -H decay_0.965_1.75e-3.py -s_e_e 1 -cos_obj 1 -cos_alph 0.75 -clip 5; python test.py -sh 0  -spl 3 -load_dir copy_real_bi/shuffle0/spl3/qp_cos_rev/cos_alph0.75_decay0.965_1.75_alpha0.0075 -e 17 -bin 0 -con 1 -c 1 -bi 1 -m 0 
-```
-```
-python train.py -a 0.0075 -sh 0 -spl -1 -m 0  -kl 0 -save_dir copy_real_bi/shuffle0/spl-1/qp_cos_rev/cos_alph0.75_decay0.965_1.75_alpha0.0075 -ac 0 -qp 1 -bin 0 -con 1  -c 0 -bi 1 -H decay_0.965_1.75e-3.py -s_e_e 1 -cos_obj 1 -cos_alph 0.75 -clip 5 ; python test.py -sh 0  -spl -1 -load_dir copy_real_bi/shuffle0/spl-1/qp_cos_rev/cos_alph0.75_decay0.965_1.75_alpha0.0075 -e 17 -bin 0 -con 1 -c 1 -bi 1 -m 0 
 ```
 
 4. To replicate results for splitting scheme II (Table 1), run and average the numbers obtained from test.py over 5 splits for each model:
@@ -117,118 +105,49 @@ python train.py -a 0 -sh 2 -spl 2 -m 0  -kl 0 -save_dir copy_real_bi/shuffle2/sp
 ```
 python train.py -a 0 -sh 2 -spl 3 -m 0  -kl 0 -save_dir copy_real_bi/shuffle2/spl3/1e-3_alpha0_lr0.5 -bin 0 -con 1  -c 0 -bi 1 -H decay5e-4.py -s_e_e 1; python test.py -sh 2 -spl 3 -load_dir copy_real_bi/shuffle2/spl3/1e-3_alpha0_lr0.5 -e 20  -bin 0 -con 1 -c 1 -bi 1 -m 0 
 ```
-```
-python train.py -a 0 -sh 2 -spl -1 -m 0  -kl 0 -save_dir copy_real_bi/shuffle2/spl-1/1e-3_alpha0_lr0.5 -bin 0 -con 1  -c 0 -bi 1 -H decay5e-4.py -s_e_e 1; python test.py -sh 2 -spl -1 -load_dir copy_real_bi/shuffle2/spl-1/1e-3_alpha0_lr0.5 -e 20  -bin 0 -con 1 -c 1 -bi 1 -m 0 
-```
 
 **4-2: ParaGen**
 ```
-python train.py -a 0.01 -sh 2 -spl 0 -m 0  -kl 0 -save_dir copy_real_bi/shuffle2/spl0/ac0_qp1/1e-3_alha0.01_lr_1.5 -ac 0 -qp 1 -bin 0 -con 1  -c 1 -bi 1 -H decay1.5e-3.py -s_e_e 1; python test.py -sh 2 -spl 0 -load_dir copy_real_bi/shuffle2/spl0/ac0_qp1/1e-3_alha0.01_lr_1.5 -e 18 -bin 0 -con 1 -c 1 -bi 1 -m 0 
+python train_trainingsample.py -a 0.01 -sh 2 -spl 0 -m 0  -kl 0 -save_dir re-sampled/shuffle2/spl0/paragen_lr1.5 -ac 0 -qp 1 -bin 0 -con 1  -c 1 -bi 1 -H decay1.5e-3.py -s_e_e 1
 ```
 ```
-python train.py -a 0.01 -sh 2 -spl 1 -m 0  -kl 0 -save_dir copy_real_bi/shuffle2/spl1/ac0_qp1/1e-3_alha0.01_lr_1.5 -ac 0 -qp 1 -bin 0 -con 1  -c 1 -bi 1 -H decay1.5e-3.py -s_e_e 1; python test.py -sh 2 -spl 1 -load_dir copy_real_bi/shuffle2/spl1/ac0_qp1/1e-3_alha0.01_lr_1.5 -e 18 -bin 0 -con 1 -c 1 -bi 1 -m 0 
+python train_trainingsample.py -a 0.01 -sh 2 -spl 1 -m 0  -kl 0 -save_dir re-sampled/shuffle2/spl1/paragen_lr1.5 -ac 0 -qp 1 -bin 0 -con 1  -c 1 -bi 1 -H decay1.5e-3.py -s_e_e 1
 ```
 ```
-python train.py -a 0.01 -sh 2 -spl 2 -m 0  -kl 0 -save_dir copy_real_bi/shuffle2/spl2/ac0_qp1/1e-3_alha0.01_lr_1.5 -ac 0 -qp 1 -bin 0 -con 1  -c 1 -bi 1 -H decay1.5e-3.py -s_e_e 1; python test.py -sh 2 -spl 2 -load_dir copy_real_bi/shuffle2/spl2/ac0_qp1/1e-3_alha0.01_lr_1.5 -e 18 -bin 0 -con 1 -c 1 -bi 1 -m 0 
+python train_trainingsample.py -a 0.01 -sh 2 -spl 2 -m 0  -kl 0 -save_dir re-sampled/shuffle2/spl2/paragen_lr1.5 -ac 0 -qp 1 -bin 0 -con 1  -c 1 -bi 1 -H decay1.5e-3.py -s_e_e 1
 ```
 ```
-python train.py -a 0.01 -sh 2 -spl 3 -m 0  -kl 0 -save_dir copy_real_bi/shuffle2/spl3/ac0_qp1/1e-3_alha0.01_lr_1.5 -ac 0 -qp 1 -bin 0 -con 1  -c 1 -bi 1 -H decay1.5e-3.py -s_e_e 1; python test.py -sh 2 -spl 3 -load_dir copy_real_bi/shuffle2/spl3/ac0_qp1/1e-3_alha0.01_lr_1.5 -e 18 -bin 0 -con 1 -c 1 -bi 1 -m 0 
-```
-```
-python train.py -a 0.01 -sh 2 -spl -1 -m 0  -kl 0 -save_dir copy_real_bi/shuffle2/spl-1/ac0_qp1/1e-3_alha0.01_lr_1.5 -ac 0 -qp 1 -bin 0 -con 1  -c 1 -bi 1 -H decay1.5e-3.py -s_e_e 1; python test.py -sh 2 -spl -1 -load_dir copy_real_bi/shuffle2/spl4/ac0_qp1/1e-3_alha0.01_lr_1.5 -e 18 -bin 0 -con 1 -c 1 -bi 1 -m 0 
+python train_trainingsample.py -a 0.01 -sh 2 -spl 3 -m 0  -kl 0 -save_dir re-sampled/shuffle2/spl3/paragen_lr1.5 -ac 0 -qp 1 -bin 0 -con 1  -c 1 -bi 1 -H decay1.5e-3.py -s_e_e 1
 ```
 
 **4-3: ParaDetect**
 
 ```
-python train.py -a 0.01 -sh 2 -spl 0 -m 0  -kl 0 -save_dir copy_real_bi/shuffle2/spl0/qp_cos_rev/cos_only_0.98_1.5_clip6 -ac 0 -qp 1 -bin 0 -con 1  -c 0 -bi 1 -H decay_0.98_1.5e-3.py -cos_obj 1 -cos_alph 1 -cos_only 1 -s_e_e 1 -clip 6; python test.py -sh 2  -spl 0 -load_dir copy_real_bi/shuffle2/spl0/qp_cos_rev/cos_only_0.98_1.5_clip6 -e 14 -bin 0 -con 1 -c 1 -bi 1 -m 0 
+python train_trainingsample.py -a 0.01 -sh 2 -spl 0 -m 0 -kl 0 -save_dir re-sampled/shuffle2/spl0/paradetect -ac 0 -qp 1 -bin 0 -con 1 -c 2 -bi 1 -H decay_0.98_1.5e-3.py -cos_obj 1 -cos_alph 1 -cos_only 1 -s_e_e 1 -clip 6 
 ```
 ```
-python train.py -a 0.01 -sh 2 -spl 1 -m 0  -kl 0 -save_dir copy_real_bi/shuffle2/spl1/qp_cos_rev/cos_only_0.98_1.5_clip6 -ac 0 -qp 1 -bin 0 -con 1  -c 0 -bi 1 -H decay_0.98_1.5e-3.py -cos_obj 1 -cos_alph 1 -cos_only 1 -s_e_e 1 -clip 6; python test.py -sh 2  -spl 1 -load_dir copy_real_bi/shuffle2/spl1/qp_cos_rev/cos_only_0.98_1.5_clip6 -e 14 -bin 0 -con 1 -c 1 -bi 1 -m 0 
+python train_trainingsample.py -a 0.01 -sh 2 -spl 1 -m 0 -kl 0 -save_dir re-sampled/shuffle2/spl1/paradetect -ac 0 -qp 1 -bin 0 -con 1 -c 2 -bi 1 -H decay_0.98_1.5e-3.py -cos_obj 1 -cos_alph 1 -cos_only 1 -s_e_e 1 -clip 6 
 ```
 ```
-python train.py -a 0.01 -sh 2 -spl 2 -m 0  -kl 0 -save_dir copy_real_bi/shuffle2/spl2/qp_cos_rev/cos_only_0.98_1.5_clip6 -ac 0 -qp 1 -bin 0 -con 1  -c 3 -bi 1 -H decay_0.98_1.5e-3.py -cos_obj 1 -cos_alph 1 -cos_only 1 -s_e_e 1 -clip 6; python test.py -sh 2  -spl 2 -load_dir copy_real_bi/shuffle2/spl2/qp_cos_rev/cos_only_0.98_1.5_clip6 -e 14 -bin 0 -con 1 -c 1 -bi 1 -m 0 
+python train_trainingsample.py -a 0.01 -sh 2 -spl 2 -m 0 -kl 0 -save_dir re-sampled/shuffle2/spl2/paradetect -ac 0 -qp 1 -bin 0 -con 1 -c 2 -bi 1 -H decay_0.98_1.5e-3.py -cos_obj 1 -cos_alph 1 -cos_only 1 -s_e_e 1 -clip 6 
 ```
 ```
-python train.py -a 0.01 -sh 2 -spl 3 -m 0  -kl 0 -save_dir copy_real_bi/shuffle2/spl3/qp_cos_rev/cos_only_0.98_1.5_clip6 -ac 0 -qp 1 -bin 0 -con 1  -c 0 -bi 1 -H decay_0.98_1.5e-3.py -cos_obj 1 -cos_alph 1 -cos_only 1 -s_e_e 1 -clip 6; python test.py -sh 2  -spl 3 -load_dir copy_real_bi/shuffle2/spl3/qp_cos_rev/cos_only_0.98_1.5_clip6 -e 14 -bin 0 -con 1 -c 1 -bi 1 -m 0 
-```
-```
-python train.py -a 0.01 -sh 2 -spl -1 -m 0  -kl 0 -save_dir copy_real_bi/shuffle2/spl-1/qp_cos_rev/cos_only_0.98_1.5_clip6 -ac 0 -qp 1 -bin 0 -con 1  -c 3 -bi 1 -H decay_0.98_1.5e-3.py -cos_obj 1 -cos_alph 1 -cos_only 1 -s_e_e 1 -clip 6; python test.py -sh 2  -spl -1 -load_dir copy_real_bi/shuffle2/spl-1/qp_cos_rev/cos_only_0.98_1.5_clip6 -e 14 -bin 0 -con 1 -c 1 -bi 1 -m 0 
+python train_trainingsample.py -a 0.01 -sh 2 -spl 3 -m 0 -kl 0 -save_dir re-sampled/shuffle2/spl3/paradetect -ac 0 -qp 1 -bin 0 -con 1 -c 2 -bi 1 -H decay_0.98_1.5e-3.py -cos_obj 1 -cos_alph 1 -cos_only 1 -s_e_e 1 -clip 6 
 ```
 
 **4-4: ParaGen + ParaDetect**
 
 ```
-python train.py -a 0.0075 -sh 2 -spl 0 -m 0 save_dir copy_real_bi/shuffle2/spl0/qp_cos_rev/cos_alph0.75_decay0.965_1.75_alpha0.0075 -ac 0 -qp 1 -bin 0 -con 1  -c 3 -bi 1 -H decay_0.965_1.75e-3.py -s_e_e 1 -cos_obj 1 -cos_alph 0.75 -clip 5; python test.py -sh 2  -spl 0 -load_dir copy_real_bi/shuffle2/spl0/qp_cos_rev/cos_alph0.75_decay0.965_1.75_alpha0.0075 -e 17 -bin 0 -con 1 -c 1 -bi 1 -m 0 
+python train_trainingsample.py -a 0.0075 -sh 2 -spl 0 -m 0 -kl 0 -save_dir re-sampled/shuffle2/spl0/para_gen_and_detect  -ac 0 -qp 1 -bin 0 -con 1 -c 3 -bi 1 -H decay_0.965_1.75e-3.py -s_e_e 1 -cos_obj 1 -cos_alph 0.75 -clip 5 
 ```
 ```
-python train.py -a 0.0075 -sh 2 -spl 1 -m 0  -kl 0 -save_dir copy_real_bi/shuffle2/spl1/qp_cos_rev/cos_alph0.75_decay0.965_1.75_alpha0.0075 -ac 0 -qp 1 -bin 0 -con 1  -c 0 -bi 1 -H decay_0.965_1.75e-3.py -s_e_e 1 -cos_obj 1 -cos_alph 0.75 -clip 5; python test.py -sh 2  -spl 1 -load_dir copy_real_bi/shuffle2/spl1/qp_cos_rev/cos_alph0.75_decay0.965_1.75_alpha0.0075 -e 17 -bin 0 -con 1 -c 1 -bi 1 -m 0 
+python train_trainingsample.py -a 0.0075 -sh 2 -spl 1 -m 0 -kl 0 -save_dir re-sampled/shuffle2/spl1/para_gen_and_detect  -ac 0 -qp 1 -bin 0 -con 1 -c 3 -bi 1 -H decay_0.965_1.75e-3.py -s_e_e 1 -cos_obj 1 -cos_alph 0.75 -clip 5 
 ```
 ```
-python train.py -a 0.0075 -sh 2 -spl 2 -m 0  -kl 0 -save_dir copy_real_bi/shuffle2/spl2/qp_cos_rev/cos_alph0.75_decay0.965_1.75_alpha0.0075 -ac 0 -qp 1 -bin 0 -con 1  -c 3 -bi 1 -H decay_0.965_1.75e-3.py -s_e_e 1 -cos_obj 1 -cos_alph 0.75 -clip 5; python test.py -sh 2  -spl 1 -load_dir copy_real_bi/shuffle2/spl1/qp_cos_rev/cos_alph0.75_decay0.965_1.75_alpha0.0075 -e 17 -bin 0 -con 1 -c 1 -bi 1 -m 0 
+python train_trainingsample.py -a 0.0075 -sh 2 -spl 2 -m 0 -kl 0 -save_dir re-sampled/shuffle2/spl2/para_gen_and_detect  -ac 0 -qp 1 -bin 0 -con 1 -c 3 -bi 1 -H decay_0.965_1.75e-3.py -s_e_e 1 -cos_obj 1 -cos_alph 0.75 -clip 5 ```
 ```
 ```
-python train.py -a 0.0075 -sh 2 -spl 3 -m 0  -kl 0 -save_dir copy_real_bi/shuffle2/spl3/qp_cos_rev/cos_alph0.75_decay0.965_1.75_alpha0.0075 -ac 0 -qp 1 -bin 0 -con 1  -c 3 -bi 1 -H decay_0.965_1.75e-3.py -s_e_e 1 -cos_obj 1 -cos_alph 0.75 -clip 5; python test.py -sh 2  -spl 2 -load_dir copy_real_bi/shuffle2/spl2/qp_cos_rev/cos_alph0.75_decay0.965_1.75_alpha0.0075 -e 17 -bin 0 -con 1 -c 1 -bi 1 -m 0  
-```
-```
-python train.py -a 0.0075 -sh 2 -spl -1 -m 0  -kl 0 -save_dir copy_real_bi/shuffle2/spl-1/qp_cos_rev/cos_alph0.75_decay0.965_1.75_alpha0.0075 -ac 0 -qp 1 -bin 0 -con 1  -c 0 -bi 1 -H decay_0.965_1.75e-3.py -s_e_e 1 -cos_obj 1 -cos_alph 0.75 -clip 5 ; python test.py -sh 2  -spl -1 -load_dir copy_real_bi/shuffle2/spl-1/qp_cos_rev/cos_alph0.75_decay0.965_1.75_alpha0.0075 -e 17 -bin 0 -con 1 -c 1 -bi 1 -m 0 
-```
-
-<!---### and without  --> 
-5. To replicate results for models with word2vec for a single split (splitting scheme II) (Table 2), run the following:
-
-**5-1: Baseline (Simple Seq2seq with Copy)**
-```
-python train.py -a 0 -sh 2 -spl 3 -m 0 -kl 0 -save_dir word2vec/shuffle2/spl3/baseline -bin 0 -con 1 -c 2 -bi 1 -H decay5e-4.py -s_e_e 1 -word_vec 1 -word_vec_medical 1; python test.py -sh 2  -spl 3 -load_dir  word2vec/shuffle2/spl3/baseline  -e 8 -bin 0 -con 1 -c 2 -bi 1 -m 0 -word_vec 1 -word_vec_medical 1
-```
-**5-2: ParaGen**
-```
-python train.py -a 0.01 -sh 2 -spl 3 -m 0  -kl 0 -save_dir word2vec/shuffle2/spl3/geb -ac 0 -qp 1 -bin 0 -con 1  -c 1 -bi 1 -H decay1.5e-3.py  -s_e_e 1 -word_vec 1 -word_vec_medical 1; python train.py -a 0.01 -sh 2 -spl 3 -m 0  -kl 0 -save_dir word2vec/shuffle2/spl3/geb -ac 0 -qp 1 -bin 0 -con 1  -c 1 -bi 1 -H decay1.5e-3.py  -s_e_e 1 -word_vec 1 -word_vec_medical 1
-```
-**5-3: ParaDetect**
-```
-python train.py -a 0.01 -sh 2 -spl 3 -m 0 -kl 0 -save_dir word2vec/shuffle2/spl3/cos -ac 0 -qp 1 -bin 0 -con 1 -c 3 -bi 1 -H decay_0.98_1.5e-3.py -cos_obj 1 -cos_alph 1 -cos_only 1 -s_e_e 1 -clip 6 -word_vec 1 -word_vec_medical 1; python test.py -sh 2  -spl 3 -load_dir word2vec/shuffle2/spl3/cos -e 14 -bin 0 -con 1 -c 3 -bi 1 -m 0 
-```
-**5-4: ParaGen + ParaDetect**
-```
-python train.py -a 0.0075 -sh 2 -spl 3 -m 0 -kl 0 -save_dir word2vec/shuffle2/spl3/both -ac 0 -qp 1 -bin 0 -con 1 -c 2 -bi 1 -H decay_0.965_1.75e-3.py -s_e_e 1 -cos_obj 1 -cos_alph 0.75 -clip 5 -word_vec 1 -word_vec_medical 1; python test.py -sh 2  -spl 3 -load_dir  word2vec/shuffle2/spl3/both -e 13 -bin 0 -con 1 -c 3 -bi 1 -m 0 
-```
-
-
-
-6. To replicate results for baseline with BERT sentence embeddings, run:
-```
-python train.py -a 0 -sh 2 -spl 3 -m 0 -kl 0 -save_dir bertsent/shuffle2/spl3/baseline_bertsent -bin 0 -con 1 -c 1 -bi 1 -H decay5e-4.py -s_e_e 1 -bert_sent 1; python test.py -sh 2 -spl 3 -load_dir bertsent/shuffle2/spl3/baseline_bertsent -e 25  -bin 0 -con 1 -c 1 -bi 1 -m 0 
-```
-
-7. To replicate results for the shrinking experiment for a single split (Figure 5), run the following: 
-**7-1: Baseline (Simple Seq2seq with Copy)**
-```
-python train.py -a 0 -sh 2 -spl 3 -m 0 -kl 0 -save_dir copy_real_bi/shuffle2/spl3/1e-3_alpha0_s1_lr0.5_downsample0.8 -bin 0 -con 1 -c 0 -bi 1 -H decay5e-4.py -s_e_e 1 -down_sample_perc 0.8; python train.py -a 0 -sh 2 -spl 3 -m 0 -kl 0 -save_dir copy_real_bi/shuffle2/spl3/1e-3_alpha0_s1_lr0.5_downsample0.7 -bin 0 -con 1 -c 0 -bi 1 -H decay5e-4.py -s_e_e 1 -down_sample_perc 0.7 ; python train.py -a 0 -sh 2 -spl 3 -m 0 -kl 0 -save_dir copy_real_bi/shuffle2/spl3/1e-3_alpha0_s1_lr0.5_downsample0.6 -bin 0 -con 1 -c 0 -bi 1 -H decay5e-4.py -s_e_e 1 -down_sample_perc 0.6; python train.py -a 0 -sh 2 -spl 3 -m 0 -kl 0 -save_dir copy_real_bi/shuffle2/spl3/1e-3_alpha0_s1_lr0.5_downsample0.5 -bin 0 -con 1 -c 0 -bi 1 -H decay5e-4.py -s_e_e 1 -down_sample_perc 0.5; python train.py -a 0 -sh 2 -spl 3 -m 0 -kl 0 -save_dir copy_real_bi/shuffle2/spl3/1e-3_alpha0_s1_lr0.5_downsample0.4 -bin 0 -con 1 -c 0 -bi 1 -H decay5e-4.py -s_e_e 1 -down_sample_perc 0.4; python train.py -a 0 -sh 2 -spl 3 -m 0 -kl 0 -save_dir copy_real_bi/shuffle2/spl3/1e-3_alpha0_s1_lr0.5_downsample0.3 -bin 0 -con 1 -c 0 -bi 1 -H decay5e-4.py -s_e_e 1 -down_sample_perc 0.3
-```
-```
-python test.py -sh 2  -spl 3 -load_dir copy_real_bi/shuffle2/spl3/1e-3_alpha0_s1_lr0.5_downsample0.8 -e 20 -bin 0 -con 1 -c 0 -bi 1 -m 0; python test.py -sh 2  -spl 3 -load_dir copy_real_bi/shuffle2/spl3/1e-3_alpha0_s1_lr0.5_downsample0.7 -e 20 -bin 0 -con 1 -c 0 -bi 1 -m 0; python test.py -sh 2  -spl 3 -load_dir copy_real_bi/shuffle2/spl3/1e-3_alpha0_s1_lr0.5_downsample0.6 -e 20 -bin 0 -con 1 -c 0 -bi 1 -m 0; python test.py -sh 2  -spl 3 -load_dir copy_real_bi/shuffle2/spl3/1e-3_alpha0_s1_lr0.5_downsample0.5 -e 20 -bin 0 -con 1 -c 2 -bi 1 -m 0; python test.py -sh 2  -spl 3 -load_dir copy_real_bi/shuffle2/spl3/1e-3_alpha0_s1_lr0.5_downsample0.4 -e 20 -bin 0 -con 1 -c 2 -bi 1 -m 0; python test.py -sh 2  -spl 3 -load_dir copy_real_bi/shuffle2/spl3/1e-3_alpha0_s1_lr0.5_downsample0.3 -e 20 -bin 0 -con 1 -c 2 -bi 1 -m 0
-```
-**7-2: ParaGen**
-```
-python train.py -a 0.01 -sh 2 -spl 3 -m 0  -kl 0 -save_dir copy_real_bi/shuffle2/spl3/ac0_qp1/1e-3_alha0.01_s1_lr_1.5_downsampled0.8 -ac 0 -qp 1 -bin 0 -con 1  -c 3 -bi 1 -H decay1.5e-3.py -down_sample_perc 0.8 -s_e_e 1 ;python train.py -a 0.01 -sh 2 -spl 3 -m 0  -kl 0 -save_dir copy_real_bi/shuffle2/spl3/ac0_qp1/1e-3_alha0.01_s1_lr_1.5_downsampled0.7 -ac 0 -qp 1 -bin 0 -con 1  -c 3 -bi 1 -H decay1.5e-3.py -down_sample_perc 0.7 -s_e_e 1 ; python train.py -a 0.01 -sh 2 -spl 3 -m 0  -kl 0 -save_dir copy_real_bi/shuffle2/spl3/ac0_qp1/1e-3_alha0.01_s1_lr_1.5_downsampled0.6 -ac 0 -qp 1 -bin 0 -con 1  -c 3 -bi 1 -H decay1.5e-3.py -down_sample_perc 0.6 -s_e_e 1 ; python train.py -a 0.01 -sh 2 -spl 3 -m 0  -kl 0 -save_dir copy_real_bi/shuffle2/spl3/ac0_qp1/1e-3_alha0.01_s1_lr_1.5_downsampled0.5 -ac 0 -qp 1 -bin 0 -con 1  -c 3 -bi 1 -H decay1.5e-3.py -down_sample_perc 0.5 -s_e_e 1; python train.py -a 0.01 -sh 2 -spl 3 -m 0  -kl 0 -save_dir copy_real_bi/shuffle2/spl3/ac0_qp1/1e-3_alha0.01_s1_lr_1.5_downsampled0.4 -ac 0 -qp 1 -bin 0 -con 1  -c 3 -bi 1 -H decay1.5e-3.py -down_sample_perc 0.4 -s_e_e 1; python train.py -a 0.01 -sh 2 -spl 3 -m 0  -kl 0 -save_dir copy_real_bi/shuffle2/spl3/ac0_qp1/1e-3_alha0.01_s1_lr_1.5_downsampled0.3 -ac 0 -qp 1 -bin 0 -con 1  -c 3 -bi 1 -H decay1.5e-3.py -down_sample_perc 0.3 -s_e_e 1
-```
-```
-python test.py -sh 2  -spl 3 -load_dir copy_real_bi/shuffle2/spl3/ac0_qp1/1e-3_alha0.01_s1_lr_1.5_downsampled0.8  -e 18 -bin 0 -con 1 -c 1 -bi 1 -m 0; python test.py -sh 2  -spl 3 -load_dir copy_real_bi/shuffle2/spl3/ac0_qp1/1e-3_alha0.01_s1_lr_1.5_downsampled0.7  -e 18 -bin 0 -con 1 -c 1 -bi 1 -m 0; python test.py -sh 2  -spl 3 -load_dir copy_real_bi/shuffle2/spl3/ac0_qp1/1e-3_alha0.01_s1_lr_1.5_downsampled0.6  -e 18 -bin 0 -con 1 -c 2 -bi 1 -m 0; python test.py -sh 2  -spl 3 -load_dir copy_real_bi/shuffle2/spl3/ac0_qp1/1e-3_alha0.01_s1_lr_1.5_downsampled0.5  -e 18 -bin 0 -con 1 -c 2 -bi 1 -m 0; python test.py -sh 2  -spl 3 -load_dir copy_real_bi/shuffle2/spl3/ac0_qp1/1e-3_alha0.01_s1_lr_1.5_downsampled0.4  -e 18 -bin 0 -con 1 -c 3 -bi 1 -m 0; python test.py -sh 2  -spl 3 -load_dir copy_real_bi/shuffle2/spl3/ac0_qp1/1e-3_alha0.01_s1_lr_1.5_downsampled0.3  -e 18 -bin 0 -con 1 -c 3 -bi 1 -m 0
-```
-**7-3: ParaDetect**
-```
-python train.py -a 0.01 -sh 2 -spl 3 -m 0 -kl 0 -save_dir copy_real_bi/shuffle2/spl2/qp_cos_rev/cos_only_0.98_1.5_clip6_downsample0.8 -ac 0 -qp 1 -bin 0 -con 1 -c 0 -bi 1 -H decay_0.98_1.5e-3.py -cos_obj 1 -cos_alph 1 -cos_only 1 -s_e_e 1 -clip 6 -down_sample_perc 0.8 ; python train.py -a 0.01 -sh 2 -spl 3 -m 0 -kl 0 -save_dir copy_real_bi/shuffle2/spl2/qp_cos_rev/cos_only_0.98_1.5_clip6_downsample0.7 -ac 0 -qp 1 -bin 0 -con 1 -c 0 -bi 1 -H decay_0.98_1.5e-3.py -cos_obj 1 -cos_alph 1 -cos_only 1 -s_e_e 1 -clip 6 -down_sample_perc 0.7 ; python train.py -a 0.01 -sh 2 -spl 3 -m 0 -kl 0 -save_dir copy_real_bi/shuffle2/spl2/qp_cos_rev/cos_only_0.98_1.5_clip6_downsample0.6 -ac 0 -qp 1 -bin 0 -con 1 -c 0 -bi 1 -H decay_0.98_1.5e-3.py -cos_obj 1 -cos_alph 1 -cos_only 1 -s_e_e 1 -clip 6 -down_sample_perc 0.6; python train.py -a 0.01 -sh 2 -spl 3 -m 0 -kl 0 -save_dir copy_real_bi/shuffle2/spl2/qp_cos_rev/cos_only_0.98_1.5_clip6_downsample0.5 -ac 0 -qp 1 -bin 0 -con 1 -c 0 -bi 1 -H decay_0.98_1.5e-3.py -cos_obj 1 -cos_alph 1 -cos_only 1 -s_e_e 1 -clip 6 -down_sample_perc 0.5; python train.py -a 0.01 -sh 2 -spl 3 -m 0 -kl 0 -save_dir copy_real_bi/shuffle2/spl2/qp_cos_rev/cos_only_0.98_1.5_clip6_downsample0.4 -ac 0 -qp 1 -bin 0 -con 1 -c 0 -bi 1 -H decay_0.98_1.5e-3.py -cos_obj 1 -cos_alph 1 -cos_only 1 -s_e_e 1 -clip 6 -down_sample_perc 0.4; python train.py -a 0.01 -sh 2 -spl 3 -m 0 -kl 0 -save_dir copy_real_bi/shuffle2/spl2/qp_cos_rev/cos_only_0.98_1.5_clip6_downsample0.3 -ac 0 -qp 1 -bin 0 -con 1 -c 0 -bi 1 -H decay_0.98_1.5e-3.py -cos_obj 1 -cos_alph 1 -cos_only 1 -s_e_e 1 -clip 6 -down_sample_perc 0.3
-```
-```
-python test.py -sh 2  -spl 3 -load_dir copy_real_bi/shuffle2/spl3/qp_cos_rev/cos_only_0.98_1.5_clip6_downsample0.8 -e 14 -bin 0 -con 1 -c 3 -bi 1 -m 0; python test.py -sh 2  -spl 3 -load_dir copy_real_bi/shuffle2/spl3/qp_cos_rev/cos_only_0.98_1.5_clip6_downsample0.7 -e 14 -bin 0 -con 1 -c 3 -bi 1 -m 0; python test.py -sh 2  -spl 3 -load_dir copy_real_bi/shuffle2/spl3/qp_cos_rev/cos_only_0.98_1.5_clip6_downsample0.6 -e 14 -bin 0 -con 1 -c 1 -bi 1 -m 0; python test.py -sh 2  -spl 3 -load_dir copy_real_bi/shuffle2/spl3/qp_cos_rev/cos_only_0.98_1.5_clip6_downsample0.5 -e 14 -bin 0 -con 1 -c 1 -bi 1 -m 0 ; python test.py -sh 2  -spl 3 -load_dir copy_real_bi/shuffle2/spl3/qp_cos_rev/cos_only_0.98_1.5_clip6_downsample0.4 -e 14 -bin 0 -con 1 -c 1 -bi 1 -m 0; python test.py -sh 2  -spl 3 -load_dir copy_real_bi/shuffle2/spl3/qp_cos_rev/cos_only_0.98_1.5_clip6_downsample0.3 -e 14 -bin 0 -con 1 -c 1 -bi 1 -m 0
-```
-**7-4: ParaGen + ParaDetect**
-```
-python train.py -a 0.0075 -sh 2 -spl 3 -m 0 -kl 0 -save_dir copy_real_bi/shuffle2/spl3/qp_cos_rev/cos_alph0.75_decay0.965_1.75_alpha0.0075_downsample0.8 -ac 0 -qp 1 -bin 0 -con 1 -c 0 -bi 1 -H decay_0.965_1.75e-3.py -s_e_e 1 -cos_obj 1 -cos_alph 0.75 -clip 5 -down_sample_perc 0.8  ; python train.py -a 0.0075 -sh 2 -spl 3 -m 0 -kl 0 -save_dir copy_real_bi/shuffle2/spl3/qp_cos_rev/cos_alph0.75_decay0.965_1.75_alpha0.0075_downsample0.7 -ac 0 -qp 1 -bin 0 -con 1 -c 0 -bi 1 -H decay_0.965_1.75e-3.py -s_e_e 1 -cos_obj 1 -cos_alph 0.75 -clip 5 -down_sample_perc 0.7 ; python train.py -a 0.0075 -sh 2 -spl 3 -m 0 -kl 0 -save_dir copy_real_bi/shuffle2/spl3/qp_cos_rev/cos_alph0.75_decay0.965_1.75_alpha0.0075_downsample0.6 -ac 0 -qp 1 -bin 0 -con 1 -c 0 -bi 1 -H decay_0.965_1.75e-3.py -s_e_e 1 -cos_obj 1 -cos_alph 0.75 -clip 5 -down_sample_perc 0.6; python train.py -a 0.0075 -sh 2 -spl 3 -m 0 -kl 0 -save_dir copy_real_bi/shuffle2/spl3/qp_cos_rev/cos_alph0.75_decay0.965_1.75_alpha0.0075_downsample0.5 -ac 0 -qp 1 -bin 0 -con 1 -c 0 -bi 1 -H decay_0.965_1.75e-3.py -s_e_e 1 -cos_obj 1 -cos_alph 0.75 -clip 5 -down_sample_perc 0.5; python train.py -a 0.0075 -sh 2 -spl 3 -m 0 -kl 0 -save_dir copy_real_bi/shuffle2/spl3/qp_cos_rev/cos_alph0.75_decay0.965_1.75_alpha0.0075_downsample0.4 -ac 0 -qp 1 -bin 0 -con 1 -c 0 -bi 1 -H decay_0.965_1.75e-3.py -s_e_e 1 -cos_obj 1 -cos_alph 0.75 -clip 5 -down_sample_perc 0.4; python train.py -a 0.0075 -sh 2 -spl 3 -m 0 -kl 0 -save_dir copy_real_bi/shuffle2/spl3/qp_cos_rev/cos_alph0.75_decay0.965_1.75_alpha0.0075_downsample0.3 -ac 0 -qp 1 -bin 0 -con 1 -c 0 -bi 1 -H decay_0.965_1.75e-3.py -s_e_e 1 -cos_obj 1 -cos_alph 0.75 -clip 5 -down_sample_perc 0.3
-```
-```
-python test.py -sh 2  -spl 3 -load_dir copy_real_bi/shuffle2/spl3/qp_cos_rev/cos_alph0.75_decay0.965_1.75_alpha0.0075_downsample0.8 -e 17 -bin 0 -con 1 -c 1 -bi 1 -m 0; python test.py -sh 2  -spl 3 -load_dir copy_real_bi/shuffle2/spl3/qp_cos_rev/cos_alph0.75_decay0.965_1.75_alpha0.0075_downsample0.7 -e 17 -bin 0 -con 1 -c 1 -bi 1 -m 0; python test.py -sh 2  -spl 3 -load_dir copy_real_bi/shuffle2/spl3/qp_cos_rev/cos_alph0.75_decay0.965_1.75_alpha0.0075_downsample0.6 -e 17 -bin 0 -con 1 -c 0 -bi 1 -m 0; python test.py -sh 2  -spl 3 -load_dir copy_real_bi/shuffle2/spl3/qp_cos_rev/cos_alph0.75_decay0.965_1.75_alpha0.0075_downsample0.5 -e 17 -bin 0 -con 1 -c 1 -bi 1 -m 0; python test.py -sh 2  -spl 3 -load_dir copy_real_bi/shuffle2/spl3/qp_cos_rev/cos_alph0.75_decay0.965_1.75_alpha0.0075_downsample0.4 -e 17 -bin 0 -con 1 -c 3 -bi 1 -m 0; python test.py -sh 2  -spl 3 -load_dir copy_real_bi/shuffle2/spl3/qp_cos_rev/cos_alph0.75_decay0.965_1.75_alpha0.0075_downsample0.3 -e 17 -bin 0 -con 1 -c 3 -bi 1 -m 0
+python train_trainingsample.py -a 0.0075 -sh 2 -spl 3 -m 0 -kl 0 -save_dir re-sampled/shuffle2/spl3/para_gen_and_detect  -ac 0 -qp 1 -bin 0 -con 1 -c 3 -bi 1 -H decay_0.965_1.75e-3.py -s_e_e 1 -cos_obj 1 -cos_alph 0.75 -clip 5 
 ```
 
 ### Results for Semantic Parsing on Overnight
