@@ -14,7 +14,7 @@ import unicodedata
 import string
 import re
 import random
-import nltk
+#import nltk
 import numpy as np
 import pickle#, dill
 import _pickle as cPickle

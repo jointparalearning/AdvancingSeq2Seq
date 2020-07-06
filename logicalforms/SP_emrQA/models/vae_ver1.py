@@ -70,9 +70,9 @@ class CopyEncoderRAW(nn.Module):
         #Put in pad_packed 반대로!
         return lstm_out, hidden
 
-class AutoDecoder(nn.Module):
+class VAEDecoder(nn.Module):
     def __init__(self, AUTOhidden_dim, AUTOoutput_dim, latent_dim):
-        super(AutoDecoder, self).__init__()
+        super(VAEDecoder, self).__init__()
         self.latent_dim = latent_dim
         self.hidden2mean = nn.Linear(AUTOhidden_dim * 2, latent_dim)
         self.hidden2logv = nn.Linear(AUTOhidden_dim * 2, latent_dim)

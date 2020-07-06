@@ -13,7 +13,7 @@ import unicodedata
 import string
 import re
 import random
-import nltk
+#import nltk
 import numpy as np
 import pickle#, dill
 import _pickle as cPickle
@@ -28,11 +28,17 @@ from torch.autograd import Variable
 import numpy as np
 import copy
 
-
-OutputMasterDictbyTypeRAW = cPickle.load(open("data/NoRepOutputMasterDictbyTypeRAW.p", "rb"))
-vocab2idx_dictRAW = cPickle.load(open("data/NoRepUnique_idx2vocab_dictRAW.p", "rb"))
-raw_question_binary_en = cPickle.load(open("data/raw_question_binary_ent.p", "rb"))
-        
+try:
+    OutputMasterDictbyTypeRAW = cPickle.load(open("data/NoRepOutputMasterDictbyTypeRAW.p", "rb"))
+    vocab2idx_dictRAW = cPickle.load(open("data/NoRepUnique_idx2vocab_dictRAW.p", "rb"))
+    raw_question_binary_en = cPickle.load(open("data/raw_question_binary_ent.p", "rb"))
+    
+except:
+    
+    OutputMasterDictbyTypeRAW = pickle.load(open("/Volumes/Transcend/emrqa/preprocessed/OutputMaster/SMALLOutputMasterDictbyTypeRAW.p", "rb"))
+    vocab2idx_dictRAW = pickle.load(open("/Volumes/Transcend/emrqa/preprocessed/OutputMaster/unique_idx2vocab_dictRAW.p", "rb"))
+    raw_question_binary_en = pickle.load(open("/Volumes/Transcend/emrqa/preprocessed/OutputMaster/SMALLraw_question_binary_ent.p", "rb"))
+    
 print("read files")
 
 tokenized_eng_sentences = OutputMasterDictbyTypeRAW['question']

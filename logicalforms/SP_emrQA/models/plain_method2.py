@@ -17,7 +17,7 @@ from models.seq2seq_Luong import *
 
 class CopyEncoderRAW(nn.Module):
 
-    def __init__(self, hidden_dim, vocab_size, word2vec=0, word_vectors=None):
+    def __init__(self, hidden_dim, vocab_size, word2vec=0, word_vectors=None, proj_use=False, proj_basis_dim=0):
         super(CopyEncoderRAW, self).__init__()
         self.hidden_dim = hidden_dim
         self.embedding =  nn.Embedding(vocab_size, hidden_dim, padding_idx=0)
@@ -27,10 +27,20 @@ class CopyEncoderRAW(nn.Module):
         if word2vec == 1:
             word_vectors = torch.FloatTensor(word_vectors).cuda()
             self.embedding = self.embedding.from_pretrained(word_vectors)
-            self.word2vec_lin = nn.Linear(300, hidden_dim)
-
-
-
+            self.word2vec_lin = nn.Linear(300, hidden_dim) 
+            
+        self.proj_use = proj_use
+        if proj_use == True:
+             self.Basis = nn.Parameter(torch.rand(hidden_dim*2, proj_basis_dim))
+             self.make_proj_mat()
+             
+    def make_proj_mat(self):
+        if not(self.proj_use):
+            pass
+        else:
+            self.BasisT = self.Basis.transpose(0,1)
+            self.proj_mat = torch.mm(torch.mm(self.Basis, torch.inverse(torch.mm(self.BasisT, self.Basis))), self.BasisT)
+            
        #sentence is list of index of words
     def forward(self, sentence2idxvec,X_lengths):
         #print("input shape:" + str(sentence2idxvec.shape))
@@ -187,7 +197,7 @@ class VAESeq2seqDecoder(nn.Module):
 
 
 class CopyDecoder(nn.Module):
-    def __init__(self, vocab_size, embed_size, hidden_size, max_oovs=12, bi =0, bert_sent=0):
+    def __init__(self, vocab_size, embed_size, hidden_size, max_oovs=12, bi =0, bert_sent=0, word2vec=None, word_vectors=None):
         super(CopyDecoder, self).__init__()
         self.vocab_size = vocab_size
         self.hidden_size = hidden_size
@@ -216,6 +226,12 @@ class CopyDecoder(nn.Module):
         self.Wo = nn.Linear(hidden_size*2, vocab_size) # generate mode
         self.Wc = nn.Linear(hidden_size, hidden_size*2) # copy mode
         self.nonlinear = nn.Tanh()
+        
+        self.word2vec = word2vec
+        if word2vec == 1:
+            word_vectors = torch.FloatTensor(word_vectors).cuda()
+            self.embed = self.embed.from_pretrained(word_vectors)
+            self.word2vec_lin = nn.Linear(300, hidden_size) 
         
         #self.W_bi = nn.Linear(hidden_size*2, hidden_size)
 
@@ -254,8 +270,11 @@ class CopyDecoder(nn.Module):
         if time_check:
             self.elapsed_time('state 0')
         
+        embeds = self.embed(input_idx)
+        if self.word2vec == 1:
+            embeds = self.word2vec_lin(embeds)
         # 1. update states
-        gru_input = torch.cat([self.embed(input_idx).view(b,1,-1), weighted],2) # [b x 1 x (h*2+emb)]
+        gru_input = torch.cat([embeds.view(b,1,-1), weighted],2) # [b x 1 x (h*2+emb)]
         rnn_output, state = self.gru(gru_input, prev_state) #output and state are literally the same
         state = state.view(b,-1) # [b x h]
         rnn_output = rnn_output.view(1,b,rnn_output.shape[2]) #rnn_output: [1 x Batch x Hidden]

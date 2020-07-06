@@ -23,6 +23,7 @@ import argparse
 from models.masked_cross_enropy import *
 from models.plain_method2 import *
 from models.seq2seq_Luong import *
+#from bert_serving.client import BertClient
 
 
 #from tensorboardX import SummaryWriter
@@ -54,6 +55,7 @@ parser.add_argument('-word_vec', '--word2vec', type = int, metavar='', default =
 parser.add_argument('-word_vec_medical', '--word2vec_medical', type = int, metavar='', default = 0, help ="conditional copy")
 parser.add_argument('-word_vec_nonmedical', '--word2vec_nonmedical', type = int, metavar='', default = 0, help ="conditional copy")
 parser.add_argument('-bert_sent', '--bert_sent', type = int, metavar='', default = 0, help ="conditional copy")
+parser.add_argument('-bert_word', '--bert_word', type = int, metavar='', default = 0, help ="conditional copy")
 
 
 parser.add_argument('-cos_obj', '--cos_obj', type = int, metavar='', default = 0, help ="conditional copy")
@@ -76,6 +78,11 @@ parser.add_argument('-skip_val', '--skip_validation', type = int, metavar='', de
 
 parser.add_argument('-down_sample_perc', '--down_sample_perc', type = float, metavar='', default = 1.0, help = "cuda")
 
+parser.add_argument('-proj_use', '--proj_use', type = int, metavar='', default = 0, help = "cuda")
+parser.add_argument('-proj_basis_dim', '--proj_basis_dim', type = int, metavar='', default = 0, help = "cuda")
+
+parser.add_argument('-gray', '--gray', type = int, metavar='', default = 0, help = "cuda")
+
 
 args = parser.parse_args()
 
@@ -84,6 +91,10 @@ m_ver_dict = {0: 'models/plain_method2.py', 1:'models/plain_method2.py', 2:  'mo
 
 
 torch.manual_seed(1000*args.seed)
+
+gray_file = ''
+if args.gray == 1:
+    gray_file = '/scratch/symin95/gray_emrqa_outputs/'
 
 
 def remove_pad(pair):
@@ -145,7 +156,7 @@ def train(num_epochs, args):
         assert counter==1
         return acc
     def log(args, epoch):
-        file_name = "outputs/" + args.saving_dir + "/logs.txt"
+        file_name = gray_file + "outputs/" + args.saving_dir + "/logs.txt"
         file = open(file_name, "w")
         file.write("ran till epoch: " + str(epoch) + "\n")
         file.write("model: "+str(args.model_version)+ "\n" )
@@ -171,23 +182,23 @@ def train(num_epochs, args):
         file.close()
 
     def save(trans_pairs, rec_pairs, args):
-        torch.save(encoder.state_dict(),'outputs/' + args.saving_dir + '/encoder.pt')
-        torch.save(decoder.state_dict(),'outputs/' + args.saving_dir + '/decoder.pt')
-        torch.save(AUTOdecoder.state_dict(),'outputs/' + args.saving_dir + '/auto-decoder.pt')
+        torch.save(encoder.state_dict(), gray_file + 'outputs/' + args.saving_dir + '/encoder.pt')
+        torch.save(decoder.state_dict(),gray_file + 'outputs/' + args.saving_dir + '/decoder.pt')
+        torch.save(AUTOdecoder.state_dict(),gray_file + 'outputs/' + args.saving_dir + '/auto-decoder.pt')
         pairs_dict = {'translation_pairs': trans_pairs, 'reconstruction_pairs': rec_pairs}
         loss_dict = {'training':training_loss_dict, 'validation': validation_loss_dict}
         final_dict = {'pairs_dict':pairs_dict, 'loss_dict':loss_dict}
-        cPickle.dump(final_dict, open('outputs/' + args.saving_dir + '/loss_list.p',"wb"))    
+        cPickle.dump(final_dict, open(gray_file + 'outputs/' + args.saving_dir + '/loss_list.p',"wb"))    
         
        
     def save_every_epoch(trans_pairs, rec_pairs, args, epoch):
-        torch.save(encoder.state_dict(),'outputs/' + args.saving_dir + '/encoder_epoch' + str(epoch) +  '.pt')
-        torch.save(decoder.state_dict(),'outputs/' + args.saving_dir + '/decoder_epoch' + str(epoch) +  '.pt')
-        torch.save(AUTOdecoder.state_dict(),'outputs/' + args.saving_dir + '/auto-decoder_epoch' + str(epoch) +  '.pt')
+        torch.save(encoder.state_dict(),gray_file + 'outputs/' + args.saving_dir + '/encoder_epoch' + str(epoch) +  '.pt')
+        torch.save(decoder.state_dict(),gray_file + 'outputs/' + args.saving_dir + '/decoder_epoch' + str(epoch) +  '.pt')
+        torch.save(AUTOdecoder.state_dict(),gray_file +'outputs/' + args.saving_dir + '/auto-decoder_epoch' + str(epoch) +  '.pt')
         pairs_dict = {'translation_pairs': trans_pairs, 'reconstruction_pairs': rec_pairs}
         loss_dict = {'training':training_loss_dict, 'validation': validation_loss_dict}
         final_dict = {'pairs_dict':pairs_dict, 'loss_dict':loss_dict}
-        cPickle.dump(final_dict, open('outputs/' + args.saving_dir + '/loss_list.p',"wb"))    
+        cPickle.dump(final_dict, open(gray_file + 'outputs/' + args.saving_dir + '/loss_list.p',"wb"))    
         
     
     def prepare_batch_training(batch_num):
@@ -361,7 +372,7 @@ def train(num_epochs, args):
     split_num = args.split_num
         
     ###make folder for save_dir
-    save_dir = "outputs/" + save_dir 
+    save_dir = gray_file + "outputs/" + save_dir 
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
         
@@ -402,16 +413,16 @@ def train(num_epochs, args):
     assert args.word2vec_medical + args.word2vec_nonmedical in [0,1]
     if args.word2vec == 1:
         if args.word2vec_medical == 1:
-            word_vectors = cPickle.load(open('data/emrqa_word2vec.p','rb'))
+            word_vectors = cPickle.load(open('/data/scratch-oc40/symin95/github_lf/logicalforms/Refactored_Tiffany/data/emrqa_word2vec.p','rb'))
         elif args.word2vec_nonmedical == 1:
-            word_vectors = cPickle.load(open('data/emrqa_nonmedical_word2vec.p','rb'))
+            word_vectors = cPickle.load(open('/data/scratch-oc40/symin95/github_lf/logicalforms/Refactored_Tiffany/data/emrqa_nonmedical_word2vec.p','rb'))
 
     #load model version
     assert m_ver in m_ver_dict
     exec(open(m_ver_dict[m_ver]).read(), globals(), globals())
     #initialize model and load if needed 
     if m_ver in [0,2,4]: #DID UNTIL HERE!
-        encoder = CopyEncoderRAW(hidden_dim, vocab_size, args.word2vec, word_vectors)
+        encoder = CopyEncoderRAW(hidden_dim, vocab_size, args.word2vec, word_vectors, args.proj_use, args.proj_basis_dim)
         decoder = CopyDecoder(vocab_size, embed_dim*2, hidden_dim*2, bi =args.bi, bert_sent = args.bert_sent)
         #AUTOdecoder = AutoDecoder(AUTOhidden_dim, vocab_size)
         if args.auto_copy == 1:
@@ -424,15 +435,16 @@ def train(num_epochs, args):
         decoder = CopyDecoder(vocab_size, embed_dim*2, hidden_dim*2, bi =args.bi)
         AUTOdecoder = VAEDecoder(AUTOhidden_dim, vocab_size, latent_dim, bi=args.bi)
         
-        
     else:
         raise NotImplementedError
+        
 
     if torch.cuda.is_available():
         encoder.cuda()
         decoder.cuda()
         AUTOdecoder.cuda()
 
+    
     #load save_dir
     
     #load loss function
@@ -463,16 +475,16 @@ def train(num_epochs, args):
         
     
     if load_dir:
-        trained_until = 13
+        trained_until = 10
 # =============================================================================
 #         encoder_dir = 'outputs/' + load_dir + '/encoder.pt'  
 #         decoder_dir = 'outputs/' + load_dir + '/decoder.pt'
 #         auto_dir = 'outputs/' + load_dir + '/auto-decoder.pt'
 # =============================================================================
         
-        encoder_dir = 'outputs/' + load_dir + '/encoder_epoch' + str(trained_until) +'.pt'  
-        decoder_dir = 'outputs/' + load_dir + '/decoder_epoch' + str(trained_until) +'.pt'
-        auto_dir = 'outputs/' + load_dir + '/auto-decoder_epoch' + str(trained_until) +'.pt'
+        encoder_dir = gray_file + 'outputs/' + load_dir + '/encoder_epoch' + str(trained_until) +'.pt'  
+        decoder_dir = gray_file + 'outputs/' + load_dir + '/decoder_epoch' + str(trained_until) +'.pt'
+        auto_dir = gray_file + 'outputs/' + load_dir + '/auto-decoder_epoch' + str(trained_until) +'.pt'
         
         encoder.load_state_dict(torch.load(encoder_dir)) 
         decoder.load_state_dict(torch.load(decoder_dir)) 
@@ -739,9 +751,14 @@ def train(num_epochs, args):
                     encoded_p, hidden_ec_p = encoder(sorted_p_vectors, sorted_p_lengths)
                     p_rep =torch.cat([encoded_p[:, -1, :hidden_dim], encoded_p[:, 0, hidden_dim:]  ], 1) 
                     #turn back
+                    
                     p_rep = p_rep[original_relative_idx_sorted]
                     if args.cos_hinge ==0:
-                        cos_loss = cos_loss_function(p_rep, s1, torch.tensor([1.0]*batch_size).cuda())
+                        if args.proj_use == 0:
+                            cos_loss = cos_loss_function(p_rep, s1, torch.tensor([1.0]*batch_size).cuda())
+                        else:
+                            encoder.make_proj_mat()
+                            cos_loss = cos_loss_function(torch.mm(encoder.proj_mat, p_rep.transpose(0,1)).transpose(0,1), torch.mm(encoder.proj_mat, s1.transpose(0,1)).transpose(0,1), torch.tensor([1.0]*batch_size).cuda())
                     else:
                         return_sorted_neg_vectors,neg_original_relative_idx_sorted, sorted_neg_lengths = sample_negatives(sorted_idxes)
                         encoded_neg, hidden_ec_neg = encoder(return_sorted_neg_vectors, sorted_neg_lengths)
@@ -756,7 +773,12 @@ def train(num_epochs, args):
                 p_rep =torch.cat([encoded_p[:, -1, :hidden_dim], encoded_p[:, 0, hidden_dim:]  ], 1) 
                 #turn back
                 p_rep = p_rep[original_relative_idx_sorted]
-                cos_loss = cos_loss_function(p_rep, s1, torch.tensor([1.0]*batch_size).cuda())
+                if args.proj_use == 0:
+                    cos_loss = cos_loss_function(p_rep, s1, torch.tensor([1.0]*batch_size).cuda())
+                else:
+                    encoder.make_proj_mat()
+                    cos_loss = cos_loss_function(torch.mm(encoder.proj_mat, p_rep.transpose(0,1)).transpose(0,1), torch.mm(encoder.proj_mat, s1.transpose(0,1)).transpose(0,1), torch.tensor([1.0]*batch_size).cuda())
+
                 avg_cos_loss += cos_loss
                 translation_loss = temp_loss_function(pad_out, target)
                 joint_loss = translation_loss + args.alpha* args.cos_alph* cos_loss

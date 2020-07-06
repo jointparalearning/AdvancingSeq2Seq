@@ -17,6 +17,12 @@ import numpy as np
 import os
 import random
 from nltk.translate.bleu_score import sentence_bleu
+from models.plain_method2 import *
+from models.seq2seq_Luong import *
+
+
+from paraphrase_embedding_model import *
+
 
 
 parser = argparse.ArgumentParser(description='Define trainig arguments')
@@ -36,10 +42,21 @@ parser.add_argument('-down_sample_perc', '--down_sample_perc', type = float, met
 parser.add_argument('-word_vec', '--word2vec', type = int, metavar='', default = 0, help ="conditional copy")
 parser.add_argument('-word_vec_medical', '--word2vec_medical', type = int, metavar='', default = 0, help ="conditional copy")
 parser.add_argument('-word_vec_nonmedical', '--word2vec_nonmedical', type = int, metavar='', default = 0, help ="conditional copy")
+parser.add_argument('-word_vec_corpus_inputonly', '--word2vec_corpus_inputonly', type = int, metavar='', default = 0, help ="conditional copy")
+
+
+parser.add_argument('-bert_sent', '--bert_sent', type = int, metavar='', default = 0, help ="conditional copy")
+parser.add_argument('-GRAN', '--GRAN', type = int, metavar='', default = 0, help = "cuda")
+ 
+parser.add_argument('-gray', '--gray', type=int, metavar='', required=False, help="gray")
 
 
 
 args = parser.parse_args()
+
+gray_file = ''
+if args.gray == 1:
+    gray_file = '/scratch/symin95/gray_emrqa_outputs/'
 
 lf_binary_entsRAW = cPickle.load(open("data/weihung_binary_lf.p", "rb"))
 
@@ -56,13 +73,16 @@ def load_model(args, word_vectors):
     AUTOhidden_dim = 128
     
     #initialize model
-    m_ver_dict = {0: 'models/plain_method2.py', 1:'models/vae_ver1.py', 2:  'models/plain_explicit.py', 3:'models/vae_explicit.py'}
-    exec(open(m_ver_dict[model_type]).read(), globals(), globals())
+    #m_ver_dict = {0: 'models/plain_method2.py', 1:'models/vae_ver1.py', 2:  'models/plain_explicit.py', 3:'models/vae_explicit.py'}
+    #exec(open(m_ver_dict[model_type]).read(), globals(), globals())
     if model_type in [0,2]:
-        encoder = CopyEncoderRAW(hidden_dim, vocab_size, args.word2vec, word_vectors)
-        decoder = CopyDecoder(vocab_size, embed_dim*2, hidden_dim*2, bi = args.bi)
+        if args.GRAN ==1:
+            encoder = ParaEncoderGRAN(hidden_dim, vocab_size)
+        else:
+            encoder = CopyEncoderRAW(hidden_dim, vocab_size, args.word2vec, word_vectors)
+        decoder = CopyDecoder(vocab_size, embed_dim*2, hidden_dim*2, bi =args.bi, bert_sent = args.bert_sent, word2vec = args.word2vec, word_vectors = word_vectors) #added word2vec and 
         #AUTOdecoder = AutoDecoder(AUTOhidden_dim, vocab_size)
-        AUTOdecoder = LuongAttnDecoderRNN('general', hidden_dim, vocab_size, bi =args.bi)
+        AUTOdecoder = LuongAttnDecoderRNN('general', hidden_dim, vocab_size, bi =args.bi, bert_sent = args.bert_sent)
         
     elif model_type in [1,3]:
         encoder = VAEEncoderRAW(hidden_dim, vocab_size, latent_dim)
@@ -73,13 +93,14 @@ def load_model(args, word_vectors):
         raise NotImplementedError
     
     #directories
-    encoder_dir = 'outputs/' + load_dir + '/encoder_epoch' + str(args.epoch-1) + '.pt'  
-    decoder_dir = 'outputs/' + load_dir + '/decoder_epoch' + str(args.epoch-1) + '.pt'
-    auto_dir = 'outputs/' + load_dir + '/auto-decoder_epoch' + str(args.epoch-1) + '.pt'
+    encoder_dir = gray_file + 'outputs/' + load_dir + '/encoder_epoch' + str(args.epoch-1) + '.pt'  
+    decoder_dir = gray_file + 'outputs/' + load_dir + '/decoder_epoch' + str(args.epoch-1) + '.pt'
+    auto_dir = gray_file + 'outputs/' + load_dir + '/auto-decoder_epoch' + str(args.epoch-1) + '.pt'
     
     encoder.load_state_dict(torch.load(encoder_dir)) 
     decoder.load_state_dict(torch.load(decoder_dir)) 
     AUTOdecoder.load_state_dict(torch.load(auto_dir)) 
+    
     
     #encoder = encoder.cuda(); decoder = decoder.cuda(); AUTOdecoder = AUTOdecoder.cuda()
     
@@ -115,6 +136,8 @@ def test(args):
             end_num = len(validation)
             #batch_size = end_num - batch_num*batch_size
         sorted_idxes = sorted(validation[test_batch_num*batch_size:end_num], key = lambda idx: len(sent2idxtensor(tokenized_eng_sentences[idx], idx)), reverse=True)
+        rel_sorted_idxes = sorted(range(test_batch_num*batch_size,end_num), key = lambda idx: len(sent2idxtensor(tokenized_eng_sentences[validation[idx]], idx)), reverse=True)
+
         #print("sorted idxes:" + str(sorted_idxes))
         max_length = len(sent2idxtensor(tokenized_eng_sentences[sorted_idxes[0]], sorted_idxes[0]))
         max_y_length = max([len(Qidx2LFIdxVec_dict[idx]) for idx in sorted_idxes])
@@ -130,7 +153,7 @@ def test(args):
                 pass
             x_lengths.append(len(sent))
             labels.append(Qidx2LFIdxVec_dict[idx] +[pad_token] * (max_y_length - len(Qidx2LFIdxVec_dict[idx])) )
-        return torch.tensor(sentence_vectors, device=device), torch.tensor(binary_vectors, dtype=torch.float, device=device), torch.tensor(labels, device=device), x_lengths, sorted_idxes
+        return torch.tensor(sentence_vectors, device=device), torch.tensor(binary_vectors, dtype=torch.float, device=device), torch.tensor(labels, device=device), x_lengths, sorted_idxes, rel_sorted_idxes
 
     global shuffle_scheme
     global split_num
@@ -146,9 +169,12 @@ def test(args):
     word_vectors = None
     if args.word2vec == 1:
         if args.word2vec_medical == 1:
-            word_vectors = cPickle.load(open('/data/scratch-oc40/symin95/github_lf/logicalforms/Refactored_Tiffany/data/emrqa_word2vec.p','rb'))
+            word_vectors = cPickle.load(open('data/emrqa_word2vec.p','rb'))
         elif args.word2vec_nonmedical == 1:
-            word_vectors = cPickle.load(open('/data/scratch-oc40/symin95/github_lf/logicalforms/Refactored_Tiffany/data/emrqa_nonmedical_word2vec.p','rb'))
+            word_vectors = cPickle.load(open('data/emrqa_nonmedical_word2vec.p','rb'))
+        elif args.word2vec_corpus_inputonly ==1:
+            word_vectors = cPickle.load(open('corpus_w2v/sh' + str(args.shuffle_scheme) + 'spl' + str(args.split_num) + 'dim300_inputonly_w2v.p','rb'))
+
 
     
     split_num, shuffle_scheme, save_dir = args.split_num, args.shuffle_scheme, args.loading_dir
@@ -159,6 +185,14 @@ def test(args):
         decoder.cuda()
         AUTOdecoder.cuda()
     encoder.eval(); decoder.eval(); AUTOdecoder.eval()
+    
+    
+    if args.bert_sent ==1:
+        total_dict = cPickle.load(open('bertlists/bert_split_total_dict.p', 'rb'))
+        testq = total_dict[split_num][2]
+        #convert these to numpy array, so that rel_sorted_idxes are applicable 
+        test_encoded =np.squeeze(np.array([v[0].asnumpy() for k, v in testq.items()]), axis=1)
+        test_hidden = np.squeeze(np.array([v[1].asnumpy() for k, v in testq.items()]), axis=1)
     
     #actual inference
     #current_loss_list = []
@@ -177,7 +211,7 @@ def test(args):
                 if test_batch_num %10 ==0:
                     print("==================================================")
                     print("Test Batch Percent: ",100 *(test_batch_num) * batch_size/ len(validation), "%")
-                sentence_vectors,binary_vectors, target, X_lengths, sorted_idxes  = prepare_batch_test(test_batch_num)
+                sentence_vectors,binary_vectors, target, X_lengths, sorted_idxes, rel_sorted_idxes  = prepare_batch_test(test_batch_num)
                 batch_size = sentence_vectors.shape[0]
                 test_batch_num +=1
                 translation_pairs[test_batch_num] = []; reconstruction_pairs[test_batch_num] = []
@@ -191,9 +225,17 @@ def test(args):
                 y = target.view(batch_size, -1)
         
                 # apply to encoder
-                encoded, hidden_ec = encoder(x, X_lengths) # z is [batch_size, latent_size]
+                if args.bert_sent == 0:
+                    encoded, hidden_ec = encoder(x, X_lengths) # z is [batch_size, latent_size]
+                    if args.GRAN ==0:
+                        hidden_viewed = torch.cat([encoded[:, -1, :hidden_dim], encoded[:, 0, hidden_dim:]  ], 1) 
+                    else:
+                        hidden_viewed = hidden_ec 
+                else:
+                    encoded = torch.tensor(test_encoded[rel_sorted_idxes][:, :max(X_lengths), :]).cuda()
+                    hidden_ec = torch.tensor(test_hidden[rel_sorted_idxes]).cuda()
+                    hidden_viewed = hidden_ec
                 #hidden_viewed = hidden_ec.view(batch_size, hidden_dim*2)
-                hidden_viewed = torch.cat([encoded[:, -1, :hidden_dim], encoded[:, 0, hidden_dim:]  ], 1) 
                 assert len(sorted_idxes) == batch_size
                 for i, idx in enumerate(sorted_idxes): 
                     hidden_ec_list[idx] = hidden_viewed[i].cpu()
@@ -272,7 +314,7 @@ def test(args):
                 sorted_idxes_dict[test_batch_num] =sorted_idxes
                 batch_size = 32
         
-        save_dir = "outputs/" + save_dir + "/validation_results"
+        save_dir = gray_file +"outputs/" + save_dir + "/validation_results"
         if not os.path.exists(save_dir):
             os.makedirs(save_dir)
         
@@ -298,13 +340,13 @@ def test(args):
             sentence_vectors,binary_vectors, target, X_lengths, sorted_idxes  = prepare_batch_test(test_batch_num)
             test_batch_num +=1
             sorted_idxes_dict[test_batch_num] =sorted_idxes
-        save_dir = "outputs/" + save_dir + "/validation_results"
+        save_dir = gray_file +"outputs/" + save_dir + "/validation_results"
         cPickle.dump(sorted_idxes_dict, open(save_dir+"/sorted_idxes_dict.p", "wb"))
             
         
 
     if args.cos_only is 1:
-        save_dir = "outputs/" + save_dir + "/validation_results"
+        save_dir = gray_file +"outputs/" + save_dir + "/validation_results"
         if not os.path.exists(save_dir):
             os.makedirs(save_dir)
         hidden_ec_list = cPickle.load(open(save_dir+"/hidden_ec_list.p","rb"))

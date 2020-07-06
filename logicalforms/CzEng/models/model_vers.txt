@@ -1,5 +1,0 @@
-* Explanation on the model versions *
-
-plain = obvious
-vae_ver1 = hidden is outputted from encoder, and sampling only occurs at the auto-decoder. 
-vae_ver2 = sampling occurs at the encoder and outputted. z is passed to both decoders. 

@@ -36,6 +36,8 @@ parser.add_argument('-tsne_perp', '--tsne_perp', type=int, metavar='', default=5
 
 parser.add_argument('-sorted_index', '--sorted_index', type = int, metavar='', required=True)
 parser.add_argument('-avg_cos', '--avg_cos', type = int, metavar='', required=True)
+parser.add_argument('-print_cos_pair', '--print_cos_pair', type = int, metavar='', required=True)
+
 parser.add_argument('-knn', '--k_nearest_neighbor', type=int, metavar='', required=True, help="load model and start with it if there is a directory")
 parser.add_argument('-tsne', '--tsne', type=int, metavar='', required=True, help="load model and start with it if there is a directory")
 parser.add_argument('-c', '--cuda', type=int, metavar='', required=False, help="split among 1,2,3,4,5")
@@ -43,7 +45,16 @@ parser.add_argument('-tsne_plot_only', '--tsne_plot_only', type=int, metavar='',
 parser.add_argument('-tsne_plot_lf', '--tsne_plot_lf', type=int, metavar='', default=0, help="load model and start with it if there is a directory")
 
 
+parser.add_argument('-gray', '--gray', type=int, metavar='', default=0, help="gray")
+#parser.add_argument('-bert_sent', '--bert_sent', type=int, metavar='', default=0, help="gray")
+
+
+
 args = parser.parse_args()
+
+gray_file = ''
+if args.gray == 1:
+    gray_file = '/scratch/symin95/gray_emrqa_outputs/'
 
 
 def syntax_bleu_acc(pairs_dict, sorted_idxes_dict):
@@ -147,11 +158,14 @@ def main(args):
     if args.sorted_index == 1:
         sorted_idxes_dict(split_num, shuffle_scheme)
     q_to_p_dict = cPickle.load(open('data/q_to_p_dict.p','rb'))
-    hidden_ec_list = cPickle.load(open(load_dir+"/hidden_ec_list.p","rb"))
+    hidden_ec_list = cPickle.load(open(gray_file + load_dir+"/hidden_ec_list.p","rb"))
     if args.tsne == 1:
         tsne(args, rev_unique_templ_q_dict, hidden_ec_list, load_dir)
     if args.avg_cos == 1:
-        cos_w_entity(args, hidden_ec_list, rev_unique_templ_q_dict, q_to_p_dict)
+        if args.print_cos_pair == 1:
+            cos_w_entity_print_all_instances(args, hidden_ec_list, rev_unique_templ_q_dict, q_to_p_dict)
+        else:
+            cos_w_entity(args, hidden_ec_list, rev_unique_templ_q_dict, q_to_p_dict)
     if args.tsne_plot_only ==1:
         X_tsne = cPickle.load(open(load_dir +'/X_tsne_ncomp=' +str(args.tsne_k) + '.p','rb'))
         tsne_plot_only(hidden_ec_list, X_tsne, load_dir)
@@ -268,7 +282,90 @@ def cos_w_entity(args, hidden_ec_list, rev_unique_templ_q_dict, q_to_p_dict):
     #cPickle.dump(open())
     #cPickle.dump(open())
         
+def cos_w_entity_print_all_instances(args, hidden_ec_list, rev_unique_templ_q_dict, q_to_p_dict):
+    #cos_tempq = {tq: 0 for tq in unique_templ_q_dict}
+    #counter_tempq = {tq: 0 for tq in unique_templ_q_dict}
+    cos_lf = {lf: 0 for lf in unique_lf_dict}
+    counter_lf = {lf: 0 for lf in unique_lf_dict}
+    paraphrase_dumps = []
+    nonparaphrase_dumps = [] 
     
+    for qidx in hidden_ec_list:
+        #temp_q = rev_unique_templ_q_dict[qidx]
+        lf = rev_unique_lf_dict[qidx]
+        ps = q_to_p_dict[qidx]
+        emb_q = hidden_ec_list[qidx]
+        for p in ps:
+            if p in hidden_ec_list:
+                emb_p = hidden_ec_list[p]
+                cos_sim = cosine_similarity(emb_p,emb_q,0).item()
+                if cos_sim >1.0:
+                    cos_sim = 1.0
+                #save everything into file foramt 
+                paraphrase_dumps.append((' '.join(OutputMasterDictbyTypeRAW['question'][qidx]), ' '.join(OutputMasterDictbyTypeRAW['question'][p]), 'yes' , str(cos_sim)))
+                cos_lf[lf] += cos_sim
+                counter_lf[lf] +=1
+        
+    cos_avg_lf = {}
+    total_avg = 0
+    total_v = 0
+    for lf, v in counter_lf.items():
+        if v !=0:
+            cos_avg_lf[lf] = cos_lf[lf]/v
+            total_avg += cos_lf[lf]
+            total_v += v
+        else:
+            pass
+    
+    #Negative Examples
+    cos_neg_lf = {lf: 0 for lf in unique_lf_dict}
+    counter_neg_lf = {lf: 0 for lf in unique_lf_dict}
+    for qidx in hidden_ec_list:
+        lf = rev_unique_lf_dict[qidx]
+        ps = q_to_p_dict[qidx]
+        ps_dict = {p: 1 for p in ps}
+        emb_q = hidden_ec_list[qidx]
+        #sample 5 non-paraphrase 
+        complete_non_paras = [p for p in hidden_ec_list if not(p in ps_dict or p==qidx)]
+        non_paras = random.sample(complete_non_paras, 10)
+        for np in non_paras:
+            emb_np = hidden_ec_list[np]
+            cos_sim = cosine_similarity(emb_np,emb_q,0).item()
+            if cos_sim >1.0:
+                cos_sim = 1.0
+            nonparaphrase_dumps.append((' '.join(OutputMasterDictbyTypeRAW['question'][qidx]), ' '.join(OutputMasterDictbyTypeRAW['question'][np]), 'no' , str(cos_sim)))
+            cos_neg_lf[lf] += cos_sim
+            counter_neg_lf[lf] +=1
+    
+    cos_neg_avg_lf = {}
+    total_neg_avg = 0
+    total_neg_v = 0
+    for lf, v in counter_neg_lf.items():
+        if v !=0:
+            cos_neg_avg_lf[lf] = cos_neg_lf[lf]/v
+            total_neg_avg += cos_neg_lf[lf]
+            total_neg_v += v
+        else:
+            pass
+            
+    para_file = open(gray_file + "outputs/" + args.loading_dir + "/paraphrase_pairs_cos_sim.txt", "w") 
+    nonpara_file = open(gray_file +"outputs/" + args.loading_dir + "/nonparaphrase_pairs_cos_sim.txt", "w")
+    for p_dump in paraphrase_dumps:
+        para_file.write(str(p_dump) + '\n')
+    para_file.close()
+    for np_dump in nonparaphrase_dumps:
+        nonpara_file.write(str(np_dump) + '\n')
+    nonpara_file.close()
+        
+    
+    print("Avg cosine distance between paraphrases in load dir: " + str(args.loading_dir) + " IS " +str(total_avg/total_v) )
+    print("Avg cosine distance between NON-paraphrases in load dir: " + str(args.loading_dir) + " IS " +str(total_neg_avg/total_neg_v) )
+    print("Avg Difference: " + str(total_avg/total_v - total_neg_avg/total_neg_v))
+
+    print("All cosine distances between Paraphrases: ")
+    print(cos_avg_lf)
+    print("All cosine distances between NON-Paraphrases: ")
+    print(cos_neg_avg_lf)    
         
     
            
