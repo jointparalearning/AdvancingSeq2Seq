@@ -156,30 +156,35 @@ python train_trainingsample.py -a 0.0075 -sh 2 -spl 3 -m 0 -kl 0 -save_dir re-sa
 
 2. Copy the uncompressed folder 'data' into the folder bowser_recipes_para. 
 
-3. To replicate results (Table 2), run the following commands for each model by replacing $domain$ with one of {basketball, recipes, restaurants, publications, socialnetwork, housing, calendar, blocks}:
+3. To replicate results (Table 2), run the following commands for each model by replacing 
+    3.1 $domain$ with one of {basketball, recipes, restaurants, publications, socialnetwork, housing, calendar, blocks}
+    3.2 $k$ with one of {5,7}
+    3.3 $(half, start)$ with one of {(8,30), (10,32), (12,34), (14,36)}
+    3.4 $lr$ from one of {0.001, 0.003, 0.005}
+
 
 **3-1: Baseline (Simple Seq2seq with Copy)**
 
 ```
-python bowser_train_copy.py -a 0 -which_attn_g general -which_attn_c general -bahd_g 1 -bahd_c 1 -lr 0.005 -d 0 -c 0 -l 0 -k 5 -e 200 -bi 1  -v 0  -pad 0 -jia 1  -train_f $domain$/train_v1.json  -test_f $domain$/test_v1.json -half_start 14 -half_end 36 -seed 0 -save_dir $domain$/baseline_tes_k3  -domain $domain$
+python bowser_train_copy.py -a 0 -which_attn_g general -which_attn_c general -bahd_g 1 -bahd_c 1 -lr $lr$ -d 0 -c 0 -l 0 -k $k$ -e 50 -bi 1  -v 0  -pad 0 -jia 1  -train_f $domain$/train_v1.json  -test_f $domain$/test_v1.json -half_start $start$ -half_end $end$ -seed 100 -save_dir $domain$/baseline_tes_k3  -domain $domain$
 ```
 
 **3-2: ParaGen**
 
 ```
-python bowser_train_copy.py -a 0.01 -which_attn_g general -which_attn_c general -bahd_g 1 -bahd_c 1 -lr 0.003 -d 0 -c 0 -l 0 -k 7 -e 200 -bi 1  -v 0  -pad 0 -jia 1  -train_f $domain$/train_v1.json  -test_f $domain$/test_v1.json -half_start 12 -half_end 44 -seed 100 -save_dir $domain$/baseline_tes_k3  -domain $domain$ -qp 1 -multi_para 1
+python bowser_train_copy.py -a 0.01 -which_attn_g general -which_attn_c general -bahd_g 1 -bahd_c 1 -lr $lr$  -d 0 -c 0 -l 0 -k $k$ -e 50 -bi 1  -v 0  -pad 0 -jia 1  -train_f $domain$/train_v1.json  -test_f $domain$/test_v1.json -half_start $start$ -half_end $end$ -seed 100 -save_dir $domain$/baseline_tes_k3  -domain $domain$ -qp 1 -multi_para 1
 ```
 
 **3-3: ParaDetect**
 
 ```
-python bowser_train_copy.py -a 0.01 -which_attn_g general -which_attn_c general -bahd_g 1 -bahd_c 1 -lr 0.003 -d 0 -c 3 -l 0 -k 7 -e 200 -bi 1  -v 0  -pad 0 -jia 1  -train_f $domain$/train_v1.json  -test_f $domain$/test_v1.json -half_start 8 -half_end 40 -seed 100 -save_dir $domain$/baseline_tes_k3  -domain $domain$ -qp 1 -multi_para 1 -cos_only 1 -cos_alph 1 -cos_obj 1
+python bowser_train_copy.py -a 0.01 -which_attn_g general -which_attn_c general -bahd_g 1 -bahd_c 1 -lr $lr$  -d 0 -c 0 -l 0 -k $k$ -e 50 -bi 1  -v 0  -pad 0 -jia 1  -train_f $domain$/train_v1.json  -test_f $domain$/test_v1.json -half_start $start$ -half_end $end$ -seed 100 -save_dir $domain$/baseline_tes_k3  -domain $domain$ -qp 1 -multi_para 1 -cos_only 1 -cos_alph 1 -cos_obj 1
 ```
 
 **3-4: ParaGen + ParaDetect**
 
 ```
-python bowser_train_copy.py -a 0.075 -which_attn_g general -which_attn_c general -bahd_g 1 -bahd_c 1 -lr 0.003 -d 0 -c 3 -l 0 -k 7 -e 200 -bi 1  -v 0  -pad 0 -jia 1  -train_f $domain$/train_v1.json  -test_f $domain$/test_v1.json -half_start 12 -half_end 44 -seed 100 -save_dir $domain$/baseline_tes_k3  -domain $domain$ -qp 1 -multi_para 1  -cos_alph 0.75 -cos_obj 1 
+python bowser_train_copy.py -a 0.075 -which_attn_g general -which_attn_c general -bahd_g 1 -bahd_c 1 -lr $lr$  -d 0 -c 1 -l 0 -k $k$ -e 50 -bi 1  -v 0  -pad 0 -jia 1  -train_f $domain$/train_v1.json  -test_f $domain$/test_v1.json -half_start $start$ -half_end $end$ -seed 100 -save_dir $domain$/baseline_tes_k3  -domain $domain$ -qp 1 -multi_para 1  -cos_alph 0.75 -cos_obj 1 
 ```
 
 
