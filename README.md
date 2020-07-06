@@ -157,9 +157,13 @@ python train_trainingsample.py -a 0.0075 -sh 2 -spl 3 -m 0 -kl 0 -save_dir re-sa
 2. Copy the uncompressed folder 'data' into the folder bowser_recipes_para. 
 
 3. To replicate results (Table 2), run the following commands for each model by replacing 
+
     3.1 $domain$ with one of {basketball, recipes, restaurants, publications, socialnetwork, housing, calendar, blocks}
+    
     3.2 $k$ with one of {5,7}
+    
     3.3 $(half, start)$ with one of {(8,30), (10,32), (12,34), (14,36)}
+    
     3.4 $lr$ from one of {0.001, 0.003, 0.005}
 
 
