@@ -1,5 +1,5 @@
 # AdvancingSeq2Seq
-Repository for EMNLP 2020 Submission "Advancing Seq2Seq Semantic Parsing with Joint Paraphrase Learning" 
+Repository for EMNLP ClinicalNLP Workshop 2020 Paper "Advancing Seq2Seq with Joint Paraphrase Learning" 
 
 ## Model Performances for the Overnight Dataset
 
