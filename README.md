@@ -26,9 +26,9 @@ You need to install latest version of PyTorch, numpy, NLTK. -->
 
 ### Results for Semantic Parsing on emrQA 
 
-1. Download pre-processed data at https://www.dropbox.com/sh/5o5ss42iwe2fpxb/AADT3DZYIvlLOBOjXy62HN0ja?dl=0
+1. Download pre-processed data [here](https://drive.google.com/file/d/15khf8I8yH_cZ_hMQaz-1QRehw_NhTqpe/view?usp=sharing)  and unzip.
 
-2. Copy the downloaded folder 'data' into SP_emrQA. 
+2. Copy the unzipped folder 'data' into SP_emrQA. 
 
 3. To replicate results for splittng scheme I (Table 1), run the 5 commands and average the numbers obtained from test.py over 5 splits for each model:
 
